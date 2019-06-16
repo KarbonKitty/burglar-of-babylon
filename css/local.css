@@ -1,0 +1,7 @@
+body {
+    background-color: #073642;
+}
+
+#left, #right {
+    display: inline-block;
+}

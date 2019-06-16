@@ -1,0 +1,24 @@
+{
+  "name": "rot-js-ts-template",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Roguelike template using ROT.js, TypeScript and Webpack",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "roguelike",
+    "template"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "rot-js": "^2.1.0"
+  },
+  "devDependencies": {
+    "ts-loader": "^6.0.2",
+    "typescript": "^3.5.1",
+    "webpack": "^4.33.0",
+    "webpack-cli": "^3.3.2"
+  }
+}
