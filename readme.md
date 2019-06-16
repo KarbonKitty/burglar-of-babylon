@@ -1,4 +1,4 @@
-# ROT.js, TypeScript, Webpack template from Roguelikes
+# Burglar of Vratislavia
 
 ## Build instructions
 
@@ -27,3 +27,7 @@ To run the game:
     http-server [game-dir] -p 3456
 
 It can be then open by navigating to `localhost:3456`.
+
+## Background photo license notice
+
+Licensend under CC0 from https://www.photock.org/detail/sightseeing/2598/
