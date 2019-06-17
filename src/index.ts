@@ -1,39 +1,12 @@
-import { Display, KEYS } from 'rot-js';
-
-const displayConstants = {
-    mainAreaWidth: 60,
-    mainAreaHeight: 60,
-    textAreaWidth: 80,
-    textAreaHeight: 60,
-    fontSize: 13
-};
-
-const gameDisplay = new Display({
-    width: displayConstants.mainAreaWidth,
-    height: displayConstants.mainAreaHeight,
-    forceSquareRatio: true,
-    fontSize: displayConstants.fontSize,
-    fontFamily: "arial"
-});
-
-const messageDisplay = new Display({
-    width: displayConstants.textAreaWidth,
-    height: displayConstants.textAreaHeight,
-    fontSize: displayConstants.fontSize
-});
-
-const gameContainer = gameDisplay.getContainer()!;
-const messageContainer = messageDisplay.getContainer()!;
-
-const leftDiv = document.getElementById("left")!;
-const rightDiv = document.getElementById("right")!;
-leftDiv.appendChild(gameContainer);
-rightDiv.appendChild(messageContainer);
+import { KEYS } from 'rot-js';
+import { displayConstants, init as initializeDisplay } from './display';
 
 const playerData = {
     x: displayConstants.mainAreaWidth / 2,
     y: displayConstants.mainAreaHeight / 2
 };
+
+const { gameDisplay, messageDisplay } = initializeDisplay();
 
 window.onload = () => {
     // input handler
