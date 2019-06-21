@@ -1,38 +1,51 @@
 import { Display } from 'rot-js';
 
-export const displayConstants = {
-    mainAreaWidth: 60,
-    mainAreaHeight: 60,
-    textAreaWidth: 80,
-    textAreaHeight: 60,
-    fontSize: 13
-};
+export class DisplayManager {
+    mainAreaWidth = 60;
+    mainAreaHeight = 60;
+    textAreaWidth = 80;
+    textAreaHeight = 60;
+    fontSize: number;
 
-export function init() {
-    const gameDisplay = new Display({
-        width: displayConstants.mainAreaWidth,
-        height: displayConstants.mainAreaHeight,
-        forceSquareRatio: true,
-        fontSize: displayConstants.fontSize,
-        fontFamily: "arial"
-    });
-    
-    const messageDisplay = new Display({
-        width: displayConstants.textAreaWidth,
-        height: displayConstants.textAreaHeight,
-        fontSize: displayConstants.fontSize
-    });
+    gameDisplay: Display;
+    messageDisplay: Display;
 
-    const gameContainer = gameDisplay.getContainer()!;
-    const messageContainer = messageDisplay.getContainer()!;
+    private getFontSize() {
+        if (screen.width <= 1280 || screen.height <= 720) {
+            return 10;
+        } else if (screen.width <= 1600 || screen.height <= 900) {
+            return 13;
+        } else {
+            return 16
+        }
+    }
 
-    const leftDiv = document.getElementById("left")!;
-    const rightDiv = document.getElementById("right")!;
-    leftDiv.appendChild(gameContainer);
-    rightDiv.appendChild(messageContainer);
+    constructor() {
+        this.fontSize = this.getFontSize();
 
-    return {
-        gameDisplay,
-        messageDisplay
-    };
+        const gameDisplay = new Display({
+            width: this.mainAreaWidth,
+            height: this.mainAreaHeight,
+            forceSquareRatio: true,
+            fontSize: this.fontSize,
+            fontFamily: "arial"
+        });
+
+        const messageDisplay = new Display({
+            width: this.textAreaWidth,
+            height: this.textAreaHeight,
+            fontSize: this.fontSize
+        });
+
+        const gameContainer = gameDisplay.getContainer()!;
+        const messageContainer = messageDisplay.getContainer()!;
+
+        const leftDiv = document.getElementById("left")!;
+        const rightDiv = document.getElementById("right")!;
+        leftDiv.appendChild(gameContainer);
+        rightDiv.appendChild(messageContainer);
+
+        this.gameDisplay = gameDisplay;
+        this.messageDisplay = messageDisplay;
+    }
 }
