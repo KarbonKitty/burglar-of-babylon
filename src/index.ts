@@ -1,36 +1,26 @@
-import { KEYS } from 'rot-js';
-import { displayConstants, init as initializeDisplay } from './display';
+import { Scheduler, Engine } from 'rot-js';
+import { displayConstants, initDisplay } from './display';
+import { Player } from './player';
 
-const playerData = {
-    x: displayConstants.mainAreaWidth / 2,
-    y: displayConstants.mainAreaHeight / 2
-};
+const scheduler = new Scheduler.Simple();
+const engine = new Engine(scheduler);
 
-const { gameDisplay, messageDisplay } = initializeDisplay();
+const player = new Player(
+    displayConstants.mainAreaWidth / 2,
+    displayConstants.mainAreaHeight / 2,
+    engine);
+
+scheduler.add(player, true);
+
+const { gameDisplay, messageDisplay } = initDisplay();
 
 window.onload = () => {
-    // input handler
-    window.addEventListener("keydown", e => {
-        switch (e.keyCode) {
-            case KEYS.VK_UP:
-                playerData.y -= 1;
-                break;
-            case KEYS.VK_DOWN:
-                playerData.y += 1;
-                break;
-            case KEYS.VK_LEFT:
-                playerData.x -= 1;
-                break;
-            case KEYS.VK_RIGHT:
-                playerData.x += 1;
-                break;
-        }
-    });
-
     // main loop
     window.setInterval(() => {
         gameDisplay.clear();
-        gameDisplay.draw(playerData.x, playerData.y, '@', '#fff', '#000');
+        gameDisplay.draw(player.appearance.x, player.appearance.y, '@', '#fff', '#000');
         messageDisplay.drawText(2, 2, 'Hello world!', 75);
     }, 50);
+
+    engine.start();
 };
