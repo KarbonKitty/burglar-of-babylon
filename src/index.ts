@@ -17,7 +17,7 @@ window.onload = () => {
     // main loop
     window.setInterval(() => {
         displayManager.gameDisplay.clear();
-        displayManager.gameDisplay.draw(player.appearance.x, player.appearance.y, '@', '#fff', '#000');
+        displayManager.draw(player.appearance);
         displayManager.messageDisplay.drawText(2, 2, 'Hello world!', 75);
     }, 50);
 

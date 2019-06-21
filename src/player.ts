@@ -21,7 +21,7 @@ export class Player implements Actor {
     }
 
     constructor(x: number, y: number, engine: Engine) {
-        this.appearance = { x, y, tile: { glyph: "@", fgColor: "#000000", bgColor: "#ffffff" } };
+        this.appearance = { x, y, tile: { glyph: "@", fgColor: "#ffffff", bgColor: "#000000" } };
 
         this.engine = engine;
     }

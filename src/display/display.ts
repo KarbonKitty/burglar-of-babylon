@@ -1,4 +1,5 @@
 import { Display } from 'rot-js';
+import { MapEntity } from './mapEntity';
 
 export class DisplayManager {
     mainAreaWidth = 60;
@@ -47,5 +48,9 @@ export class DisplayManager {
 
         this.gameDisplay = gameDisplay;
         this.messageDisplay = messageDisplay;
+    }
+
+    draw(entity: MapEntity) {
+        this.gameDisplay.draw(entity.x, entity.y, entity.tile.glyph, entity.tile.fgColor, entity.tile.bgColor);
     }
 }
