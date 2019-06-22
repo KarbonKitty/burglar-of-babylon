@@ -13,13 +13,17 @@ const player = new Player(
 
 scheduler.add(player, true);
 
-window.onload = () => {
-    // main loop
-    window.setInterval(() => {
-        displayManager.gameDisplay.clear();
-        displayManager.draw(player.appearance);
-        displayManager.messageDisplay.drawText(2, 2, 'Hello world!', 75);
-    }, 50);
+const drawCallback = () => {
+    displayManager.gameDisplay.clear();
+    displayManager.draw(player.appearance);
+    displayManager.messageDisplay.drawText(2, 2, 'Hello world!', 75);
+    requestAnimationFrame(drawCallback);
+}
 
+window.onload = () => {
+    // draw loop
+    requestAnimationFrame(drawCallback);
+
+    // main loop
     engine.start();
 };
