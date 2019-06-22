@@ -15,9 +15,9 @@ export class DisplayManager {
         if (screen.width <= 1280 || screen.height <= 720) {
             return 10;
         } else if (screen.width <= 1600 || screen.height <= 900) {
-            return 13;
+            return 12;
         } else {
-            return 16
+            return 15;
         }
     }
 
