@@ -2,13 +2,13 @@
     "compilerOptions": {
         "outDir": "./dist/",
         "noImplicitAny": true,
-        "module": "esnext",
         "target": "es5",
         "strict": true,
         "strictNullChecks": true,
         "sourceMap": true,
         "allowSyntheticDefaultImports": true,
-        "moduleResolution": "node"
+        "moduleResolution": "node",
+        "lib": [ "es6", "dom" ]
     },
     "exclude": [ "node_modules" ]
 }
