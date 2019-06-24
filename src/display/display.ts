@@ -1,5 +1,6 @@
 import { Display } from 'rot-js';
 import { MapEntity } from './mapEntity';
+import { GameMap } from '../map';
 
 export class DisplayManager {
     mainAreaWidth = 60;
@@ -52,5 +53,10 @@ export class DisplayManager {
 
     draw(entity: MapEntity) {
         this.gameDisplay.draw(entity.x, entity.y, entity.tile.glyph, entity.tile.fgColor, entity.tile.bgColor);
+    }
+
+    drawMap(map: GameMap) {
+        map.tileArray.forEach(tile => this.draw(tile.appearance));
+        map.actorList.forEach(actor => this.draw(actor.appearance));
     }
 }
