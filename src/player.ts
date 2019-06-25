@@ -1,22 +1,20 @@
 import { Actor } from "./actor";
 import { Engine } from 'rot-js';
 import { MapEntity } from "./display";
-import handleInput from "./input";
 
 export class Player implements Actor {
     appearance: MapEntity;
+    isPlayerTurn: boolean = false;
 
     private engine: Engine;
 
-    private inputHandler = (e: KeyboardEvent) => handleInput(e, this)
-
     act(): void {
         this.engine.lock();
-        addEventListener("keydown", this.inputHandler);
+        this.isPlayerTurn = true;
     }
 
     stopAct() {
-        removeEventListener("keydown", this.inputHandler);
+        this.isPlayerTurn = false;
         this.engine.unlock();
     }
 

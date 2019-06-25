@@ -19,6 +19,11 @@ export class GameMap {
             });
         });
     }
+
+    isPositionAvailable(x: number, y: number) {
+        const tile = this.tileArray[this.width * y + x];
+        return tile.passable;
+    }
 }
 
 export class MapTile {
