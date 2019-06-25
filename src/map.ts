@@ -1,6 +1,7 @@
 import { Tile } from "./display";
 import { Actor } from "./actor";
 import { GamePosition } from "./position";
+import { mapTiles } from "./data/tiles";
 
 export class GameMap {
     tileArray: Array<MapTile> = [];
@@ -16,7 +17,7 @@ export class GameMap {
 
         chars.forEach((row, rowIndex) => {
             row.forEach((col, colIndex) => {
-                this.tileArray[rowIndex * this.width + colIndex] = col === '.' ? new MapTile({ glyph: '.', fgColor: '#ffffff', bgColor: '#000000' }, true, true) : new MapTile({ glyph: '#', fgColor: '#ffffff', bgColor: '#000000' }, false, false);
+                this.tileArray[rowIndex * this.width + colIndex] = mapTiles.get(col)!;
             });
         });
     }
@@ -31,10 +32,10 @@ export class GameMap {
     }
 }
 
-export class MapTile {
-    constructor(
-        public tile: Tile,
-        public passable: boolean,
-        public transparent: boolean
-    ) {}
+export interface MapTile {
+    name: string,
+    description: string,
+    tile: Tile,
+    passable: boolean,
+    transparent: boolean
 }
