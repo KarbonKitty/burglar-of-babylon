@@ -4,7 +4,7 @@ import { Player } from './player';
 import { TestNPC } from './testNPC';
 import { GameMap } from './map';
 import { map as floor38map } from './data/floor38';
-import handleInput from './input';
+import { handleInput } from './input';
 
 const scheduler = new Scheduler.Simple();
 const engine = new Engine(scheduler);

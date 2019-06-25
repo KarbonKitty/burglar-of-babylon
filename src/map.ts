@@ -1,5 +1,6 @@
-import { MapEntity } from "./display";
+import { Tile } from "./display";
 import { Actor } from "./actor";
+import { GamePosition } from "./position";
 
 export class GameMap {
     tileArray: Array<MapTile> = [];
@@ -15,20 +16,24 @@ export class GameMap {
 
         chars.forEach((row, rowIndex) => {
             row.forEach((col, colIndex) => {
-                this.tileArray[rowIndex * this.width + colIndex] = col === '.' ? new MapTile({ x: colIndex, y: rowIndex, tile: { glyph: '.', fgColor: '#ffffff', bgColor: '#000000' }}, true, true) : new MapTile({ x: colIndex, y: rowIndex, tile: { glyph: '#', fgColor: '#ffffff', bgColor: '#000000' } }, false, false);
+                this.tileArray[rowIndex * this.width + colIndex] = col === '.' ? new MapTile({ glyph: '.', fgColor: '#ffffff', bgColor: '#000000' }, true, true) : new MapTile({ glyph: '#', fgColor: '#ffffff', bgColor: '#000000' }, false, false);
             });
         });
     }
 
-    isPositionAvailable(x: number, y: number) {
-        const tile = this.tileArray[this.width * y + x];
+    isPositionAvailable(position: GamePosition) {
+        const tile = this.tileArray[this.width * position.y + position.x];
         return tile.passable;
+    }
+
+    positionFromIndex(index: number) {
+        return new GamePosition(index % this.width, Math.floor(index / this.height));
     }
 }
 
 export class MapTile {
     constructor(
-        public appearance: MapEntity,
+        public tile: Tile,
         public passable: boolean,
         public transparent: boolean
     ) {}

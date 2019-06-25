@@ -1,9 +1,11 @@
 import { Actor } from "./actor";
 import { Engine } from 'rot-js';
-import { MapEntity } from "./display";
+import { Tile } from "./display";
+import { GamePosition } from "./position";
 
 export class Player implements Actor {
-    appearance: MapEntity;
+    tile: Tile;
+    position: GamePosition;
     isPlayerTurn: boolean = false;
 
     private engine: Engine;
@@ -19,7 +21,8 @@ export class Player implements Actor {
     }
 
     constructor(x: number, y: number, engine: Engine) {
-        this.appearance = { x, y, tile: { glyph: "@", fgColor: "#ffffff", bgColor: "#000000" } };
+        this.position = new GamePosition(x, y);
+        this.tile = { glyph: '@', fgColor: '#ffffff', bgColor: '#000000' };
 
         this.engine = engine;
     }

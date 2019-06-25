@@ -1,6 +1,8 @@
-import { MapEntity } from "./display";
+import { Tile } from "./display";
+import { GamePosition } from "./position";
 
 export interface Actor {
-    appearance: MapEntity;
+    tile: Tile;
+    position: GamePosition;
     act(): void;
 }

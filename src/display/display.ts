@@ -1,6 +1,7 @@
 import { Display } from 'rot-js';
-import { MapEntity } from './mapEntity';
+import { Tile } from './Tile';
 import { GameMap } from '../map';
+import { GamePosition } from '../position';
 
 export class DisplayManager {
     mainAreaWidth = 60;
@@ -30,7 +31,7 @@ export class DisplayManager {
             height: this.mainAreaHeight,
             forceSquareRatio: true,
             fontSize: this.fontSize,
-            fontFamily: "arial"
+            fontFamily: "Lucida Console"
         });
 
         const messageDisplay = new Display({
@@ -51,12 +52,12 @@ export class DisplayManager {
         this.messageDisplay = messageDisplay;
     }
 
-    draw(entity: MapEntity) {
-        this.gameDisplay.draw(entity.x, entity.y, entity.tile.glyph, entity.tile.fgColor, entity.tile.bgColor);
+    draw(tile: Tile, position: GamePosition) {
+        this.gameDisplay.draw(position.x, position.y, tile.glyph, tile.fgColor, tile.bgColor);
     }
 
     drawMap(map: GameMap) {
-        map.tileArray.forEach(tile => this.draw(tile.appearance));
-        map.actorList.forEach(actor => this.draw(actor.appearance));
+        map.tileArray.forEach((mapTile, index) => this.draw(mapTile.tile, map.positionFromIndex(index)));
+        map.actorList.forEach(actor => this.draw(actor.tile, actor.position));
     }
 }
