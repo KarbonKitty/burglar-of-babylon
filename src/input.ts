@@ -29,6 +29,8 @@ export const handleInput = (e: KeyboardEvent, player: Player, map: GameMap) => {
     if (typeof newPosition !== 'undefined') {
         if (map.isPositionAvailable(newPosition)) {
             player.position = newPosition;
+            // TODO: variable sight radius
+            map.recalculateFov(newPosition, 10);
             player.stopAct();
         }
     }

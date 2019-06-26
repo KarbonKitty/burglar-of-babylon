@@ -28,12 +28,14 @@ floor38.actorList.push(testNPC);
 
 const redraw = () => {
     displayManager.gameDisplay.clear();
-    displayManager.drawMap(floor38, player);
+    displayManager.drawMap(floor38);
     displayManager.messageDisplay.drawText(2, 2, 'Hello world!', 75);
 }
 
 window.onload = () => {
     // first draw
+    // TODO: variable sight radius
+    floor38.recalculateFov(player.position, 10);
     redraw();
 
     // handle inputs
