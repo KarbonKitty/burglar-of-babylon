@@ -30,6 +30,10 @@ export class GameMap {
     positionFromIndex(index: number) {
         return new GamePosition(index % this.width, Math.floor(index / this.height));
     }
+
+    lightPasses(x: number, y: number) {
+        return this.tileArray[this.width * y + x].transparent;
+    }
 }
 
 export interface MapTile {

@@ -28,7 +28,7 @@ floor38.actorList.push(testNPC);
 
 const redraw = () => {
     displayManager.gameDisplay.clear();
-    displayManager.drawMap(floor38);
+    displayManager.drawMap(floor38, player);
     displayManager.messageDisplay.drawText(2, 2, 'Hello world!', 75);
 }
 

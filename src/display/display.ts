@@ -1,7 +1,8 @@
-import { Display } from 'rot-js';
+import { Display, FOV } from 'rot-js';
 import { Tile } from './Tile';
 import { GameMap } from '../map';
 import { GamePosition } from '../position';
+import { Player } from '../actors/player';
 
 export class DisplayManager {
     mainAreaWidth = 60;
@@ -56,8 +57,23 @@ export class DisplayManager {
         this.gameDisplay.draw(position.x, position.y, tile.glyph, tile.fgColor, tile.bgColor);
     }
 
-    drawMap(map: GameMap) {
+    drawMapWithoutFov(map: GameMap) {
         map.tileArray.forEach((mapTile, index) => this.draw(mapTile.tile, map.positionFromIndex(index)));
         map.actorList.forEach(actor => this.draw(actor.tile, actor.position));
+    }
+
+    drawMap(map: GameMap, player: Player) {
+        const fovAlgo = new FOV.RecursiveShadowcasting(map.lightPasses.bind(map));
+        const mask: boolean[] = [];
+        // TODO: variable visibility range
+        fovAlgo.compute(player.position.x, player.position.y, 10, (x, y, r, v) => {
+            mask[map.width * y + x] = true;
+        });
+
+        map.tileArray.forEach((mapTile, index) => this.draw(
+            mask[index] ? mapTile.tile : { glyph: "~", fgColor: "#aaa", bgColor: "#333" },
+            map.positionFromIndex(index)
+        ));
+        map.actorList.forEach(actor => mask[map.width * actor.position.y + actor.position.x] ? this.draw(actor.tile, actor.position) : 0);
     }
 }
