@@ -31,7 +31,7 @@ export class DisplayManager {
             height: this.mainAreaHeight,
             forceSquareRatio: true,
             fontSize: this.fontSize,
-            fontFamily: "Lucida Console"
+            fontFamily: "Droid Sans"
         });
 
         const messageDisplay = new Display({

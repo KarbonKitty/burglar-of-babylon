@@ -13,8 +13,8 @@ const displayManager = new DisplayManager();
 const floor38 = new GameMap(floor38map);
 
 const player = new Player(
-    displayManager.mainAreaWidth / 2,
-    displayManager.mainAreaHeight / 2,
+    2,
+    19,
     engine);
 
 const testNPC = new TestNPC(
