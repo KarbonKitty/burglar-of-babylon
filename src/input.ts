@@ -1,4 +1,4 @@
-import { Player } from "./player";
+import { Player } from "./actors/player";
 import { GameMap } from "./map";
 
 import { KEYS } from "rot-js";

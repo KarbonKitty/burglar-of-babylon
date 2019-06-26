@@ -1,7 +1,7 @@
 import { Actor } from "./actor";
-import { GameMap } from "./map";
-import { Tile } from './display';
-import { GamePosition } from "./position";
+import { GameMap } from "../map";
+import { Tile } from '../display';
+import { GamePosition } from "../position";
 
 export class TestNPC implements Actor {
     tile: Tile;
@@ -16,7 +16,7 @@ export class TestNPC implements Actor {
         const choice = Math.random();
         let newPosition: GamePosition;
         if (choice <= 0.2) {
-            return;
+            return Promise.resolve();
         } else if (choice <= 0.4) {
             newPosition = this.position.east;
         } else if (choice <= 0.6) {
@@ -30,6 +30,8 @@ export class TestNPC implements Actor {
         if (this.map.isPositionAvailable(newPosition)) {
             this.position = newPosition;
         }
+
+        return Promise.resolve();
     }
 
     constructor(x: number, y: number, map: GameMap) {

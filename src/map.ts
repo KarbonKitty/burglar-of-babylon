@@ -1,5 +1,5 @@
 import { Tile } from "./display";
-import { Actor } from "./actor";
+import { Actor } from "./actors/actor";
 import { GamePosition } from "./position";
 import { mapTiles } from "./data/tiles";
 
