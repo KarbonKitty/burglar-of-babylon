@@ -17,5 +17,7 @@ mapTiles.set(" ", { name: "open air", description: "open air", tile: { glyph: " 
 mapTiles.set(">", { name: "stairs down", description: "stairs down", tile: { glyph: ">", fgColor: "#fff", bgColor: "#000" }, passable: true, transparent: true });
 mapTiles.set("<", { name: "stairs up", description: "stairs up", tile: { glyph: "<", fgColor: "#ccf", bgColor: "#000" }, passable: true, transparent: true });
 mapTiles.set("/", { name: "open door", description: "open door", tile: { glyph: "/", fgColor: "#ccf", bgColor: "#000" }, passable: true, transparent: true });
+mapTiles.set("≶", { name: "staircase", description: "stairs up and down", tile: { glyph: "≶", fgColor: "#fff", bgColor: "#000" }, passable: true, transparent: true });
+mapTiles.set("_", { name: "elevator floor", description: "elevator floor", tile: { glyph: "_", fgColor: "#ddd", bgColor: "#000" }, passable: true, transparent: true });
 
 export { mapTiles };

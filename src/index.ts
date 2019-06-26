@@ -18,7 +18,7 @@ const player = new Player(
     engine);
 
 const testNPC = new TestNPC(
-    displayManager.mainAreaWidth / 2 + 5,
+    displayManager.mainAreaWidth / 2 + 4,
     displayManager.mainAreaHeight / 2 + 5,
     floor38);
 
