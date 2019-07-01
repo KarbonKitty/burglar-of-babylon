@@ -22,8 +22,6 @@ export class GameMap {
         const chars = textMap.map(s => s.split(''));
         this.width = chars[0].length;
 
-        console.log(`${this.width} ${this.height}`);
-
         chars.forEach((row, rowIndex) => {
             row.forEach((col, colIndex) => {
                 const newTile = mapTiles.get(col);
@@ -33,8 +31,6 @@ export class GameMap {
                 this.tileArray[rowIndex * this.width + colIndex] = newTile;
             });
         });
-
-        console.log(this.tileArray);
 
         this.fov = new FOV.RecursiveShadowcasting(this.lightPasses.bind(this));
     }
