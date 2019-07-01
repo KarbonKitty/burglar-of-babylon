@@ -22,18 +22,25 @@ export class GameMap {
         const chars = textMap.map(s => s.split(''));
         this.width = chars[0].length;
 
+        console.log(`${this.width} ${this.height}`);
+
         chars.forEach((row, rowIndex) => {
             row.forEach((col, colIndex) => {
-                this.tileArray[rowIndex * this.width + colIndex] = mapTiles.get(col)!;
+                const newTile = mapTiles.get(col);
+                if (typeof newTile === 'undefined') {
+                    throw new Error(`Tile ${col} is undefined!`);
+                }
+                this.tileArray[rowIndex * this.width + colIndex] = newTile;
             });
         });
+
+        console.log(this.tileArray);
 
         this.fov = new FOV.RecursiveShadowcasting(this.lightPasses.bind(this));
     }
 
     isPositionAvailable(position: GamePosition) {
-        const tile = this.tileArray[this.width * position.y + position.x];
-        return tile.passable;
+        return this.tileArray[this.width * position.y + position.x].passable;
     }
 
     positionFromIndex(index: number) {
@@ -41,7 +48,11 @@ export class GameMap {
     }
 
     lightPasses(x: number, y: number) {
-        return this.tileArray[this.width * y + x].transparent;
+        const tile = this.tileArray[this.width * y + x];
+        if (typeof tile === 'undefined') {
+            throw new Error(`Tile at position ${x}, ${y} = ${this.width * y + x} is undefined`);
+        }
+        return tile.transparent;
     }
 
     recalculateFov(position: GamePosition, radius: number) {
