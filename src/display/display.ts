@@ -13,6 +13,8 @@ export class DisplayManager {
     gameDisplay: Display;
     messageDisplay: Display;
 
+    private messageBuffer: string[] = [];
+
     private invisibleTile = { glyph: "≈", fgColor: "#ccc", bgColor: "#333" };
 
     private getFontSize() {
@@ -75,5 +77,23 @@ export class DisplayManager {
             }
         });
         map.actorList.forEach(actor => map.visibilityMask[map.width * actor.position.y + actor.position.x] ? this.draw(actor.tile, actor.position) : 0);
+    }
+
+    addMessage(msg: string) {
+        this.messageBuffer.push(msg);
+        this.drawMessages();
+    }
+
+    drawMessages() {
+        this.messageDisplay.clear();
+        const bufferLength = this.messageBuffer.length;
+        let line = 2;
+        for (let i = bufferLength - 1; i > 0; i--) {
+            const lines = this.messageDisplay.drawText(1, line, this.messageBuffer[i], this.textAreaWidth - 2);
+            line += lines;
+            if (line >= this.mainAreaHeight - 2) {
+                break;
+            }
+        }
     }
 }

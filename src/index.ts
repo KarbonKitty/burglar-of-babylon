@@ -29,17 +29,25 @@ office.actorList.push(testNPC);
 const redraw = () => {
     displayManager.gameDisplay.clear();
     displayManager.drawMap(office);
-    displayManager.messageDisplay.drawText(2, 2, 'Hello world!', 75);
 }
 
 window.onload = () => {
     // first draw
     // TODO: variable sight radius
     office.recalculateFov(player.position, 10);
+    displayManager.addMessage("Hello world!");
     redraw();
 
     // handle inputs
     addEventListener("keydown", e => handleInput(e, player, office));
+
+    addEventListener('mousedown', e => {
+        const p = displayManager.gameDisplay.eventToPosition(e);
+        const name = office.tryLookAt(p[0], p[1]);
+        if (typeof name !== 'undefined') {
+            displayManager.addMessage(`You see a ${name}.`);
+        }
+      });
 
     // main loop
     engine.start(redraw);

@@ -60,6 +60,13 @@ export class GameMap {
         });
     }
 
+    tryLookAt(x: number, y: number) {
+        const index = this.xyToIndex(x, y);
+        if (this.visibilityMask[index]) {
+            return this.tileArray[index].name;
+        }
+    }
+
     private xyToIndex(x: number, y: number) {
         return this.width * y + x;
     }
