@@ -1,24 +1,24 @@
 import { Scheduler } from 'rot-js';
 import { DisplayManager } from './display';
 import { Player } from './actors/player';
-import { TestNPC } from './actors/testNPC';
+import { NPC } from './actors/NPC';
 import { GameMap } from './map';
 import { map as officeMap } from './data/office';
 import { handleInput } from './input';
 import { GameEngine } from './engine';
+import { wander } from './actors/ai';
 
 const scheduler = new Scheduler.Simple();
-const engine = new GameEngine(scheduler);
-const displayManager = new DisplayManager();
-
 const office = new GameMap(officeMap);
+const engine = new GameEngine(scheduler, office);
+const displayManager = new DisplayManager();
 
 const player = new Player(58, 58);
 
-const testNPC = new TestNPC(
+const testNPC = new NPC(
     displayManager.mainAreaWidth / 4 - 4,
     displayManager.mainAreaHeight / 4 - 5,
-    office);
+    wander);
 
 scheduler.add(player, true);
 scheduler.add(testNPC, true);
