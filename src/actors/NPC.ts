@@ -8,9 +8,9 @@ export class NPC implements Actor {
     position: GamePosition;
     act: (map: GameMap) => Promise<void>;
 
-    constructor(x: number, y: number, ai: (actor: Actor, map: GameMap) => Promise<void>) {
+    constructor(tile: Tile, x: number, y: number, ai: (actor: Actor, map: GameMap) => Promise<void>) {
         this.position = new GamePosition(x, y);
-        this.tile = { glyph: 'N', fgColor: '#00ffff', bgColor: '#000000' };
+        this.tile = tile;
         this.act = ai.bind(null, this);
     }
 }

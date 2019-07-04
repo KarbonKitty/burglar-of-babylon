@@ -13,18 +13,18 @@ const office = new GameMap(officeMap);
 const engine = new GameEngine(scheduler, office);
 const displayManager = new DisplayManager();
 
-const player = new Player(58, 58);
+const guardTile = { glyph: "G", fgColor: "#f00", bgColor: "#000" };
 
-const testNPC = new NPC(
-    displayManager.mainAreaWidth / 4 - 4,
-    displayManager.mainAreaHeight / 4 - 5,
-    wander);
+const player = new Player(58, 58);
+const guards = [new NPC(guardTile, 50, 58, wander), new NPC(guardTile, 49, 58, wander)];
 
 scheduler.add(player, true);
-scheduler.add(testNPC, true);
+scheduler.add(guards[0], true);
+scheduler.add(guards[1], true);
 
 office.actorList.push(player);
-office.actorList.push(testNPC);
+office.actorList.push(guards[0]);
+office.actorList.push(guards[1]);
 
 const redraw = () => {
     displayManager.gameDisplay.clear();
