@@ -36,7 +36,9 @@ export class GameMap {
     }
 
     isPositionAvailable(position: GamePosition) {
-        return this.tileArray[this.width * position.y + position.x].passable;
+        const isTilePassable = this.tileArray[this.width * position.y + position.x].passable;
+        const isTileOccupied = this.actorList.filter(a => a.position.x === position.x && a.position.y === position.y).length > 0;
+        return isTilePassable && !isTileOccupied;
     }
 
     positionFromIndex(index: number) {
