@@ -84,12 +84,12 @@ export class GameMap {
         }
     }
 
-    private xyToIndex(x: number, y: number) {
-        return this.width * y + x;
+    positionToIndex(position: GamePosition) {
+        return this.width * position.y + position.x;
     }
 
-    private positionToIndex(position: GamePosition) {
-        return this.width * position.y + position.x;
+    private xyToIndex(x: number, y: number) {
+        return this.width * y + x;
     }
 }
 
