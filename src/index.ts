@@ -7,24 +7,32 @@ import { map as officeMap } from './data/office';
 import { handleInput } from './input';
 import { GameEngine } from './engine';
 import { wander } from './actors/ai';
+import { Actor } from './actors/actor';
 
 const scheduler = new Scheduler.Simple();
 const office = new GameMap(officeMap);
 const engine = new GameEngine(scheduler, office);
 const displayManager = new DisplayManager();
 
+function registerActor(actor: Actor) {
+    scheduler.add(actor, true);
+    office.actorList.push(actor);
+}
+
 const guardTile = { glyph: "G", fgColor: "#f00", bgColor: "#000" };
 
 const player = new Player(58, 58);
-const guards = [new NPC(guardTile, 50, 58, wander), new NPC(guardTile, 49, 58, wander)];
+const guards = [
+    new NPC(guardTile, 21, 16, wander),
+    new NPC(guardTile, 18, 50, wander),
+    new NPC(guardTile, 6, 24, wander),
+    new NPC(guardTile, 50, 30, wander)];
 
-scheduler.add(player, true);
-scheduler.add(guards[0], true);
-scheduler.add(guards[1], true);
-
-office.actorList.push(player);
-office.actorList.push(guards[0]);
-office.actorList.push(guards[1]);
+registerActor(player);
+registerActor(guards[0]);
+registerActor(guards[1]);
+registerActor(guards[2]);
+registerActor(guards[3]);
 
 const redraw = () => {
     displayManager.gameDisplay.clear();
