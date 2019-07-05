@@ -19,6 +19,7 @@ function wander(actor: Actor, map: GameMap) {
 
     if (map.isPositionAvailable(newPosition)) {
         actor.position = newPosition;
+        map.recalculateEnemyFov();
     }
 
     return Promise.resolve();

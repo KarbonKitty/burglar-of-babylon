@@ -35,6 +35,7 @@ window.onload = () => {
     // first draw
     // TODO: variable sight radius
     office.recalculateFov(player.position, 10);
+    office.recalculateEnemyFov();
     displayManager.addMessage("Hello world!");
     redraw();
 

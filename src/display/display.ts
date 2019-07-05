@@ -60,6 +60,10 @@ export class DisplayManager {
         this.gameDisplay.draw(position.x, position.y, tile.glyph, tile.fgColor, tile.bgColor);
     }
 
+    drawWithBg(tile: Tile, bgColor: string, position: GamePosition) {
+        this.gameDisplay.draw(position.x, position.y, tile.glyph, tile.fgColor, bgColor);
+    }
+
     drawMapWithoutFov(map: GameMap) {
         map.tileArray.forEach((mapTile, index) => this.draw(mapTile.tile, map.positionFromIndex(index)));
         map.actorList.forEach(actor => this.draw(actor.tile, actor.position));
@@ -69,7 +73,11 @@ export class DisplayManager {
         map.tileArray.forEach((mapTile, index) => 
         {
             if (map.visibilityMask[index]) {
-                this.draw(mapTile.tile, map.positionFromIndex(index));
+                if (map.enemyVision[index]) {
+                    this.drawWithBg(mapTile.tile, "#900", map.positionFromIndex(index));
+                } else {
+                    this.draw(mapTile.tile, map.positionFromIndex(index));
+                }
             } else if (map.playerMemory[index]) {
                 this.draw({ glyph: mapTile.tile.glyph, fgColor: "#ccc", bgColor: "#000" }, map.positionFromIndex(index))
             } else {

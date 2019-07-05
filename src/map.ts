@@ -4,6 +4,7 @@ import { GamePosition } from "./position";
 import { mapTiles } from "./data/tiles";
 import { FOV } from "rot-js";
 import RecursiveShadowcasting from "rot-js/lib/fov/recursive-shadowcasting";
+import { Player } from "./actors/player";
 
 export class GameMap {
     tileArray: Array<MapTile> = [];
@@ -11,6 +12,7 @@ export class GameMap {
 
     playerMemory: Array<boolean> = [];
     visibilityMask: Array<boolean> = [];
+    enemyVision: Array<boolean> = [];
 
     width: number;
     height: number;
@@ -60,6 +62,17 @@ export class GameMap {
             this.visibilityMask[index] = true;
             this.playerMemory[index] = true;
         });
+    }
+
+    recalculateEnemyFov() {
+        this.enemyVision = [];
+
+        this.actorList.filter(a => !(a instanceof Player)).forEach(
+            a => this.fov.compute(a.position.x, a.position.y, 5, (x, y) => {
+                const index = this.xyToIndex(x, y);
+                this.enemyVision[index] = true;
+            })
+        );
     }
 
     tryLookAt(x: number, y: number) {
