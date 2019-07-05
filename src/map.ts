@@ -70,7 +70,9 @@ export class GameMap {
         this.actorList.filter(a => !(a instanceof Player)).forEach(
             a => this.fov.compute(a.position.x, a.position.y, 5, (x, y) => {
                 const index = this.xyToIndex(x, y);
-                this.enemyVision[index] = true;
+                // this way the walls aren't colored and player doesn't know
+                // that there is enemy on the other side
+                this.enemyVision[index] = this.tileArray[index].passable;
             })
         );
     }
