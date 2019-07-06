@@ -21,7 +21,7 @@ function registerActor(actor: Actor) {
 
 const guardTile = { glyph: "G", fgColor: "#f00", bgColor: "#000" };
 
-const player = new Player(58, 58);
+const player = new Player("Johnny", 58, 58);
 const guards = [
     new NPC(guardTile, 21, 16, wander),
     new NPC(guardTile, 18, 50, wander),
@@ -34,9 +34,10 @@ registerActor(guards[1]);
 registerActor(guards[2]);
 registerActor(guards[3]);
 
-const redraw = () => {
+const redraw = (player: Player) => {
     displayManager.gameDisplay.clear();
     displayManager.drawMap(office);
+    displayManager.drawInterface(player);
 }
 
 window.onload = () => {
@@ -44,8 +45,9 @@ window.onload = () => {
     // TODO: variable sight radius
     office.recalculateFov(player.position, 10);
     office.recalculateEnemyFov();
+    displayManager.drawInterface(player);
     displayManager.addMessage("Hello world!");
-    redraw();
+    redraw(player);
 
     // handle inputs
     addEventListener("keydown", e => handleInput(e, player, office));
@@ -59,5 +61,5 @@ window.onload = () => {
       });
 
     // main loop
-    engine.start(redraw);
+    engine.start(redraw.bind(null, player));
 };

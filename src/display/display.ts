@@ -2,6 +2,7 @@ import { Display, FOV } from 'rot-js';
 import { Tile } from './Tile';
 import { GameMap } from '../map';
 import { GamePosition } from '../position';
+import { Player } from '../actors/player';
 
 export class DisplayManager {
     mainAreaWidth = 60;
@@ -97,7 +98,7 @@ export class DisplayManager {
 
     drawMessages() {
         //this.messageDisplay.clear();
-        this.clearPartial(new GamePosition(0, this.interfaceAreaHeight + 1), new GamePosition(this.textAreaWidth, this.textAreaHeight))
+        this.clearPartial(new GamePosition(0, this.interfaceAreaHeight + 1), new GamePosition(this.textAreaWidth, this.textAreaHeight));
         const bufferLength = this.messageBuffer.length;
         let line = this.interfaceAreaHeight + 2;
         for (let i = bufferLength - 1; i > 0; i--) {
@@ -109,8 +110,14 @@ export class DisplayManager {
         }
     }
 
-    drawInterface() {
+    drawInterface(player: Player) {
+        this.clearPartial(new GamePosition(0, 0), new GamePosition(this.textAreaWidth, this.interfaceAreaHeight));
 
+        // player name
+        this.messageDisplay.drawText(1, 2, player.name, this.textAreaWidth - 2);
+
+        // alert level
+        this.messageDisplay.drawText(1, 4, `Current alert level: ${player.alertLevel}.`, this.textAreaWidth - 2);
     }
 
     private clearPartial(leftUp: GamePosition, rightDown: GamePosition) {

@@ -4,6 +4,7 @@ import { GamePosition } from "../position";
 import { GameMap } from "../map";
 
 export class Player implements Actor {
+    name: string;
     tile: Tile;
     position: GamePosition;
     isPlayerTurn: boolean = false;
@@ -24,8 +25,9 @@ export class Player implements Actor {
         this._resolve!();
     }
 
-    constructor(x: number, y: number) {
+    constructor(name: string, x: number, y: number) {
         this.position = new GamePosition(x, y);
+        this.name = name;
         this.tile = { glyph: '@', fgColor: '#ffffff', bgColor: '#000000' };
     }
 
