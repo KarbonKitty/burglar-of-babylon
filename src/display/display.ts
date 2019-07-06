@@ -8,6 +8,9 @@ export class DisplayManager {
     mainAreaHeight = 60;
     textAreaWidth = 80;
     textAreaHeight = 60;
+
+    private messageAreaHeight = this.textAreaHeight / 2;
+    private interfaceAreaHeight = this.textAreaHeight - this.messageAreaHeight;
     fontSize: number;
 
     gameDisplay: Display;
@@ -93,14 +96,27 @@ export class DisplayManager {
     }
 
     drawMessages() {
-        this.messageDisplay.clear();
+        //this.messageDisplay.clear();
+        this.clearPartial(new GamePosition(0, this.interfaceAreaHeight + 1), new GamePosition(this.textAreaWidth, this.textAreaHeight))
         const bufferLength = this.messageBuffer.length;
-        let line = 2;
+        let line = this.interfaceAreaHeight + 2;
         for (let i = bufferLength - 1; i > 0; i--) {
             const lines = this.messageDisplay.drawText(1, line, this.messageBuffer[i], this.textAreaWidth - 2);
             line += lines;
             if (line >= this.mainAreaHeight - 2) {
                 break;
+            }
+        }
+    }
+
+    drawInterface() {
+
+    }
+
+    private clearPartial(leftUp: GamePosition, rightDown: GamePosition) {
+        for (let i = leftUp.x; i <= rightDown.x; i++) {
+            for (let j = leftUp.y; j <= rightDown.y; j++) {
+                this.messageDisplay.draw(i, j, null, null, null);
             }
         }
     }
