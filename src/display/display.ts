@@ -19,7 +19,7 @@ export class DisplayManager {
 
     private messageBuffer: string[] = [];
 
-    private invisibleTile = { glyph: "≈", fgColor: "#ccc", bgColor: "#333" };
+    private invisibleTile = { glyph: "≈", color: "#ccc" };
 
     private getFontSize() {
         if (screen.width <= 1280 || screen.height <= 720) {
@@ -61,11 +61,11 @@ export class DisplayManager {
     }
 
     draw(tile: Tile, position: GamePosition) {
-        this.gameDisplay.draw(position.x, position.y, tile.glyph, tile.fgColor, tile.bgColor);
+        this.gameDisplay.draw(position.x, position.y, tile.glyph, tile.color, '#000');
     }
 
     drawWithBg(tile: Tile, bgColor: string, position: GamePosition) {
-        this.gameDisplay.draw(position.x, position.y, tile.glyph, tile.fgColor, bgColor);
+        this.gameDisplay.draw(position.x, position.y, tile.glyph, tile.color, bgColor);
     }
 
     drawMapWithoutFov(map: GameMap) {
@@ -83,7 +83,7 @@ export class DisplayManager {
                     this.draw(mapTile.tile, map.positionFromIndex(index));
                 }
             } else if (map.playerMemory[index]) {
-                this.draw({ glyph: mapTile.tile.glyph, fgColor: "#ccc", bgColor: "#000" }, map.positionFromIndex(index))
+                this.draw({ glyph: mapTile.tile.glyph, color: "#ccc" }, map.positionFromIndex(index))
             } else {
                 this.draw(this.invisibleTile, map.positionFromIndex(index))
             }

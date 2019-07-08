@@ -28,7 +28,7 @@ export class Player implements Actor {
     constructor(name: string, x: number, y: number) {
         this.position = new GamePosition(x, y);
         this.name = name;
-        this.tile = { glyph: '@', fgColor: '#ffffff', bgColor: '#000000' };
+        this.tile = { glyph: '@', color: '#ffffff' };
     }
 
     private checkAlertLevel() {
