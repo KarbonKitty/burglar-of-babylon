@@ -24,6 +24,9 @@ export const handleInput = (e: KeyboardEvent, player: Player, map: GameMap) => {
         case KEYS.VK_RIGHT:
             newPosition = player.position.east;
             break;
+        case KEYS.VK_SPACE:
+            player.stopAct();
+            break;
     }
 
     if (typeof newPosition !== 'undefined') {
