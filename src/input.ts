@@ -1,41 +1,69 @@
 import { Player } from "./actors/player";
 import { GameMap } from "./map";
-
-import { KEYS } from "rot-js";
 import { GamePosition } from "./position";
+import { KEYS } from "rot-js";
 
 export const handleInput = (e: KeyboardEvent, player: Player, map: GameMap) => {
     if (!player.isPlayerTurn) {
         return;
     }
 
-    let newPosition: GamePosition | undefined;
-
-    switch (e.keyCode) {
-        case KEYS.VK_UP:
-            newPosition = player.position.north;
-            break;
-        case KEYS.VK_DOWN:
-            newPosition = player.position.south;
-            break;
-        case KEYS.VK_LEFT:
-            newPosition = player.position.west;
-            break;
-        case KEYS.VK_RIGHT:
-            newPosition = player.position.east;
-            break;
-        case KEYS.VK_SPACE:
-            player.stopAct();
-            break;
-    }
-
-    if (typeof newPosition !== 'undefined') {
-        const moveSuccessful = tryMoveTo(player, map, newPosition);
-        if (moveSuccessful) {
-            player.stopAct();
-        }
+    switch (state) {
+        case "general":
+            handleGeneralKeys(e, player, map);
+            return;
+        case "use-in-direction":
+            useInDirection(e, player, map);
+            return;
     }
 };
+
+function useInPosition(position: GamePosition, player: Player, map: GameMap) {
+    const interactionSuccesful = interactInPosition(position, player, map);
+
+    if (interactionSuccesful) {
+        player.stopAct();
+    }
+}
+
+let actionSlot: (position: GamePosition, player: Player, map: GameMap) => void;
+
+type InputState = "general" | "use-in-direction";
+
+let state: InputState = 'general';
+
+function useInDirection(e: KeyboardEvent, player: Player, map: GameMap) {
+    const direction = keyToDirection(player.position, e.keyCode);
+
+    if (direction !== null) {
+        actionSlot(direction, player, map);
+        state = "general";
+    }
+}
+
+function handleGeneralKeys(e: KeyboardEvent, player: Player, map: GameMap) {
+    const direction = keyToDirection(player.position, e.keyCode);
+    if (direction !== null) {
+        handleMove(player, map, direction);
+    } else {
+        switch (e.keyCode) {
+            case KEYS.VK_SPACE:
+                player.stopAct();
+                break;
+            case KEYS.VK_U:
+                state = "use-in-direction";
+                actionSlot = useInPosition;
+                break;
+        }
+    }
+}
+
+function handleMove(player: Player, map: GameMap, newPosition: GamePosition) {
+    const moveSuccessful = tryMoveTo(player, map, newPosition);
+    if (moveSuccessful) {
+        player.stopAct();
+    }
+}
 
 function tryMoveTo(player: Player, map: GameMap, newPosition: GamePosition) {
     if (map.isPositionAvailable(newPosition)) {
@@ -44,16 +72,37 @@ function tryMoveTo(player: Player, map: GameMap, newPosition: GamePosition) {
         map.recalculateFov(newPosition, 10);
         return true;
     } else {
-        const interactFunc = map.tileArray[map.positionToIndex(newPosition)].interact;
-        if (typeof interactFunc === 'function') {
-            const command = interactFunc(player, map);
-            if (command.type === 'tile-transformation' && command.payload) {
-                map.tileArray[map.positionToIndex(newPosition)] = command.payload;
-                map.recalculateFov(player.position, 10);
-                return true;
-            }
+        return interactInPosition(newPosition, player, map);
+    }
+}
+
+function interactInPosition(position: GamePosition, player: Player, map: GameMap) {
+    const mapIndex = map.positionToIndex(position);
+
+    const interactFunc = map.tileArray[mapIndex].interact;
+    if (typeof interactFunc === 'function') {
+        const command = interactFunc(player, map);
+        if (command.type === 'tile-transformation' && command.payload) {
+            map.tileArray[mapIndex] = command.payload;
+            map.recalculateFov(player.position, 10);
+            return true;
         }
     }
 
     return false;
+}
+
+function keyToDirection(oldPosition: GamePosition, keyCode: number): GamePosition | null {
+    switch (keyCode) {
+        case KEYS.VK_UP:
+            return oldPosition.north;
+        case KEYS.VK_DOWN:
+            return oldPosition.south;
+        case KEYS.VK_LEFT:
+            return oldPosition.west;
+        case KEYS.VK_RIGHT:
+            return oldPosition.east;
+        default:
+            return null;
+    }
 }

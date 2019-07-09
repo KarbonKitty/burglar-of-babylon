@@ -90,6 +90,10 @@ export class GameMap {
         return this.width * position.y + position.x;
     }
 
+    tileInPosition(position: GamePosition) {
+        return this.tileArray[this.positionToIndex(position)];
+    }
+
     private xyToIndex(x: number, y: number) {
         return this.width * y + x;
     }
