@@ -1,7 +1,7 @@
 import { Actor } from "./actor";
-import { Tile } from "../display";
-import { GamePosition } from "../position";
 import { GameMap } from "../map";
+import { GamePosition } from "../position";
+import { Tile } from "../display";
 
 export class Player implements Actor {
     name: string;
@@ -13,22 +13,22 @@ export class Player implements Actor {
     private _resolve: ((value?: void | PromiseLike<void> | undefined) => void) | null = null;
     private _map: GameMap | null = null;
 
+        constructor(name: string, x: number, y: number) {
+            this.position = new GamePosition(x, y);
+            this.name = name;
+            this.tile = { glyph: '@', color: '#ffffff' };
+        }
+
     act(map: GameMap): Promise<void> {
         this.isPlayerTurn = true;
         this._map = map;
-        return new Promise(resolve => this._resolve = resolve);
+        return new Promise((resolve) => this._resolve = resolve);
     }
 
     stopAct() {
         this.isPlayerTurn = false;
         this.checkAlertLevel();
         this._resolve!();
-    }
-
-    constructor(name: string, x: number, y: number) {
-        this.position = new GamePosition(x, y);
-        this.name = name;
-        this.tile = { glyph: '@', color: '#ffffff' };
     }
 
     private checkAlertLevel() {

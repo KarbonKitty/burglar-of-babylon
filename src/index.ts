@@ -34,11 +34,11 @@ registerActor(guards[1]);
 registerActor(guards[2]);
 registerActor(guards[3]);
 
-const redraw = (player: Player) => {
+const redraw = (p: Player) => {
     displayManager.gameDisplay.clear();
     displayManager.drawMap(office);
-    displayManager.drawInterface(player);
-}
+    displayManager.drawInterface(p);
+};
 
 window.onload = () => {
     // first draw

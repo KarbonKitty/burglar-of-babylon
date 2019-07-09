@@ -10,26 +10,17 @@ export class DisplayManager {
     textAreaWidth = 80;
     textAreaHeight = 60;
 
-    private messageAreaHeight = this.textAreaHeight / 2;
-    private interfaceAreaHeight = this.textAreaHeight - this.messageAreaHeight;
     fontSize: number;
 
     gameDisplay: Display;
     messageDisplay: Display;
 
+    private messageAreaHeight = this.textAreaHeight / 2;
+    private interfaceAreaHeight = this.textAreaHeight - this.messageAreaHeight;
+
     private messageBuffer: string[] = [];
 
     private invisibleTile = { glyph: "≈", color: "#ccc" };
-
-    private getFontSize() {
-        if (screen.width <= 1280 || screen.height <= 720) {
-            return 10;
-        } else if (screen.width <= 1600 || screen.height <= 900) {
-            return 12;
-        } else {
-            return 15;
-        }
-    }
 
     constructor() {
         this.fontSize = this.getFontSize();
@@ -70,8 +61,7 @@ export class DisplayManager {
     }
 
     drawMap(map: GameMap) {
-        map.tileArray.forEach((mapTile, index) => 
-        {
+        map.tileArray.forEach((mapTile, index) => {
             if (map.visibilityMask[index]) {
                 if (map.enemyVision[index]) {
                     this.draw(mapTile.tile, map.positionFromIndex(index), "#900");
@@ -84,7 +74,10 @@ export class DisplayManager {
                 this.draw(this.invisibleTile, map.positionFromIndex(index), "#222");
             }
         });
-        map.actorList.forEach(actor => map.visibilityMask[map.width * actor.position.y + actor.position.x] ? this.draw(actor.tile, actor.position) : 0);
+        map.actorList.forEach(actor =>
+            map.visibilityMask[map.width * actor.position.y + actor.position.x] ?
+            this.draw(actor.tile, actor.position) :
+            0);
     }
 
     addMessage(msg: string) {
@@ -93,7 +86,9 @@ export class DisplayManager {
     }
 
     drawMessages() {
-        this.clearPartial(new GamePosition(0, this.interfaceAreaHeight + 1), new GamePosition(this.textAreaWidth, this.textAreaHeight));
+        this.clearPartial(
+            new GamePosition(0, this.interfaceAreaHeight + 1),
+            new GamePosition(this.textAreaWidth, this.textAreaHeight));
         const bufferLength = this.messageBuffer.length;
         let line = this.interfaceAreaHeight + 2;
         for (let i = bufferLength - 1; i > 0; i--) {
@@ -120,6 +115,16 @@ export class DisplayManager {
             for (let j = leftUp.y; j <= rightDown.y; j++) {
                 this.messageDisplay.draw(i, j, null, null, null);
             }
+        }
+    }
+
+    private getFontSize() {
+        if (screen.width <= 1280 || screen.height <= 720) {
+            return 10;
+        } else if (screen.width <= 1600 || screen.height <= 900) {
+            return 12;
+        } else {
+            return 15;
         }
     }
 }

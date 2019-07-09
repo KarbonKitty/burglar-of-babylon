@@ -1,6 +1,6 @@
 import { Actor } from "./actors/actor";
-import Simple from "rot-js/lib/scheduler/simple";
 import { GameMap } from "./map";
+import Simple from "rot-js/lib/scheduler/simple";
 
 export class GameEngine {
     private scheduler: Simple;
@@ -13,8 +13,10 @@ export class GameEngine {
 
     async start(drawFunction: () => void) {
         while (true) {
-            let actor: Actor = this.scheduler.next();
-            if (!actor) break;
+            const actor: Actor = this.scheduler.next();
+            if (!actor) {
+                break;
+            }
             await actor.act(this.map);
             drawFunction();
         }
