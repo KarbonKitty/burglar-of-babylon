@@ -95,10 +95,16 @@ export class GameMap {
     }
 }
 
+export interface IInteractionCommand {
+    type: "tile-transformation" | "null";
+    payload: IMapTile | null;
+}
+
 export interface IMapTile {
     name: string;
     description: string;
     tile: Tile;
     passable: boolean;
     transparent: boolean;
+    interact?: (actor: Actor, map: GameMap) => IInteractionCommand;
 }
