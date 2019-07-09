@@ -19,7 +19,7 @@ function registerActor(actor: Actor) {
     office.actorList.push(actor);
 }
 
-const guardTile = { glyph: "G", fgColor: "#f00", bgColor: "#000" };
+const guardTile = { glyph: "G", color: "#f00" };
 
 const player = new Player("Johnny", 58, 58);
 const guards = [
