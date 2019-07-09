@@ -60,11 +60,7 @@ export class DisplayManager {
         this.messageDisplay = messageDisplay;
     }
 
-    draw(tile: Tile, position: GamePosition) {
-        this.gameDisplay.draw(position.x, position.y, tile.glyph, tile.color, '#000');
-    }
-
-    drawWithBg(tile: Tile, bgColor: string, position: GamePosition) {
+    draw(tile: Tile, position: GamePosition, bgColor = "#000") {
         this.gameDisplay.draw(position.x, position.y, tile.glyph, tile.color, bgColor);
     }
 
@@ -78,14 +74,14 @@ export class DisplayManager {
         {
             if (map.visibilityMask[index]) {
                 if (map.enemyVision[index]) {
-                    this.drawWithBg(mapTile.tile, "#900", map.positionFromIndex(index));
+                    this.draw(mapTile.tile, map.positionFromIndex(index), "#900");
                 } else {
                     this.draw(mapTile.tile, map.positionFromIndex(index));
                 }
             } else if (map.playerMemory[index]) {
-                this.draw({ glyph: mapTile.tile.glyph, color: "#ccc" }, map.positionFromIndex(index))
+                this.draw({ glyph: mapTile.tile.glyph, color: "#ccc" }, map.positionFromIndex(index));
             } else {
-                this.draw(this.invisibleTile, map.positionFromIndex(index))
+                this.draw(this.invisibleTile, map.positionFromIndex(index), "#222");
             }
         });
         map.actorList.forEach(actor => map.visibilityMask[map.width * actor.position.y + actor.position.x] ? this.draw(actor.tile, actor.position) : 0);
@@ -97,7 +93,6 @@ export class DisplayManager {
     }
 
     drawMessages() {
-        //this.messageDisplay.clear();
         this.clearPartial(new GamePosition(0, this.interfaceAreaHeight + 1), new GamePosition(this.textAreaWidth, this.textAreaHeight));
         const bufferLength = this.messageBuffer.length;
         let line = this.interfaceAreaHeight + 2;
