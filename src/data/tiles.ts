@@ -1,6 +1,8 @@
-import { MapTile } from "../map";
+import { IMapTile } from "../map";
 
-const mapTiles: Map<string, MapTile> = new Map<string, MapTile>();
+/* tslint:disable:max-line-length */
+
+const mapTiles: Map<string, IMapTile> = new Map<string, IMapTile>();
 mapTiles.set(".", { name: "floor", description: "floor description", tile: { glyph: "⋅", color: "#ccf" }, passable: true, transparent: true } );
 mapTiles.set("#", { name: "wall", description: "wall description", tile: { glyph: '#', color: '#ccc' }, passable: false, transparent: false });
 mapTiles.set("=", { name: "bed", description: "just a bed", tile: { glyph: "=", color: "#ccf" }, passable: true, transparent: true });

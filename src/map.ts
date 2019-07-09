@@ -7,12 +7,12 @@ import RecursiveShadowcasting from "rot-js/lib/fov/recursive-shadowcasting";
 import { Player } from "./actors/player";
 
 export class GameMap {
-    tileArray: Array<MapTile> = [];
-    actorList: Array<Actor> = [];
+    tileArray: IMapTile[] = [];
+    actorList: Actor[] = [];
 
-    playerMemory: Array<boolean> = [];
-    visibilityMask: Array<boolean> = [];
-    enemyVision: Array<boolean> = [];
+    playerMemory: boolean[] = [];
+    visibilityMask: boolean[] = [];
+    enemyVision: boolean[] = [];
 
     width: number;
     height: number;
@@ -39,7 +39,9 @@ export class GameMap {
 
     isPositionAvailable(position: GamePosition) {
         const isTilePassable = this.tileArray[this.width * position.y + position.x].passable;
-        const isTileOccupied = this.actorList.filter(a => a.position.x === position.x && a.position.y === position.y).length > 0;
+        const isTileOccupied = this.actorList
+            .filter(a => a.position.x === position.x && a.position.y === position.y)
+            .length > 0;
         return isTilePassable && !isTileOccupied;
     }
 
@@ -93,10 +95,10 @@ export class GameMap {
     }
 }
 
-export interface MapTile {
-    name: string,
-    description: string,
-    tile: Tile,
-    passable: boolean,
-    transparent: boolean
+export interface IMapTile {
+    name: string;
+    description: string;
+    tile: Tile;
+    passable: boolean;
+    transparent: boolean;
 }
