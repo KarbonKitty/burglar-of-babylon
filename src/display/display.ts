@@ -85,6 +85,12 @@ export class DisplayManager {
         this.drawMessages();
     }
 
+    addTemporaryMessage(msg: string) {
+        this.messageBuffer.push(msg);
+        this.drawMessages();
+        this.messageBuffer.pop();
+    }
+
     drawMessages() {
         this.clearPartial(
             new GamePosition(0, this.interfaceAreaHeight + 1),

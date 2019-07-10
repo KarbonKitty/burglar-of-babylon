@@ -34,11 +34,12 @@ export class Player implements Actor {
     stopAct() {
         this.isPlayerTurn = false;
         this.checkAlertLevel();
+        this._display.drawMessages();
         this._resolve!();
     }
 
     displayInventory() {
-        this._display.addMessage("Please select an item to use (press corresponding number)");
+        this._display.addTemporaryMessage("Please select an item to use (press corresponding number)");
     }
 
     private checkAlertLevel() {
