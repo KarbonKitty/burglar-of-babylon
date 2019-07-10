@@ -1,7 +1,9 @@
 import { Actor } from "./actor";
 import { GameMap } from "../map";
 import { GamePosition } from "../position";
-import { Tile } from "../display";
+import { Tile, DisplayManager } from "../display";
+import { Inventory } from "../items/inventory";
+import { items } from "../data/items";
 
 export class Player implements Actor {
     name: string;
@@ -9,15 +11,19 @@ export class Player implements Actor {
     position: GamePosition;
     isPlayerTurn: boolean = false;
     alertLevel: number = 0;
+    inventory = new Inventory();
 
     private _resolve: ((value?: void | PromiseLike<void> | undefined) => void) | null = null;
     private _map: GameMap | null = null;
+    private _display: DisplayManager;
 
-        constructor(name: string, x: number, y: number) {
-            this.position = new GamePosition(x, y);
-            this.name = name;
-            this.tile = { glyph: '@', color: '#ffffff' };
-        }
+    constructor(name: string, x: number, y: number, displayManager: DisplayManager) {
+        this.position = new GamePosition(x, y);
+        this.name = name;
+        this.tile = { glyph: '@', color: '#ffffff' };
+        this._display = displayManager;
+        this.inventory.items.push(items.signalJammer);
+    }
 
     act(map: GameMap): Promise<void> {
         this.isPlayerTurn = true;
@@ -29,6 +35,10 @@ export class Player implements Actor {
         this.isPlayerTurn = false;
         this.checkAlertLevel();
         this._resolve!();
+    }
+
+    displayInventory() {
+        this._display.addMessage("Please select an item to use (press corresponding number)");
     }
 
     private checkAlertLevel() {

@@ -15,6 +15,9 @@ export const handleInput = (e: KeyboardEvent, player: Player, map: GameMap) => {
         case "use-in-direction":
             useInDirection(e, player, map);
             return;
+        case "use-from-inventory":
+            useFromInventory(e, player, map);
+            return;
     }
 };
 
@@ -26,9 +29,19 @@ function useInPosition(position: GamePosition, player: Player, map: GameMap) {
     }
 }
 
+function useFromInventory(e: KeyboardEvent, player: Player, map: GameMap) {
+    const num = numberFromKey(e.keyCode);
+
+    if (num !== -1) {
+        player.inventory.items[num].use(player);
+        state = "general";
+        player.stopAct();
+    }
+}
+
 let actionSlot: (position: GamePosition, player: Player, map: GameMap) => void;
 
-type InputState = "general" | "use-in-direction";
+type InputState = "general" | "use-in-direction" | "use-from-inventory";
 
 let state: InputState = 'general';
 
@@ -53,6 +66,10 @@ function handleGeneralKeys(e: KeyboardEvent, player: Player, map: GameMap) {
             case KEYS.VK_U:
                 state = "use-in-direction";
                 actionSlot = useInPosition;
+                break;
+            case KEYS.VK_I:
+                player.displayInventory();
+                state = "use-from-inventory";
                 break;
         }
     }
@@ -104,5 +121,32 @@ function keyToDirection(oldPosition: GamePosition, keyCode: number): GamePositio
             return oldPosition.east;
         default:
             return null;
+    }
+}
+
+function numberFromKey(keyCode: number) {
+    switch (keyCode) {
+        case KEYS.VK_0:
+            return 0;
+        case KEYS.VK_1:
+            return 1;
+        case KEYS.VK_2:
+            return 2;
+        case KEYS.VK_3:
+            return 3;
+        case KEYS.VK_4:
+            return 4;
+        case KEYS.VK_5:
+            return 5;
+        case KEYS.VK_6:
+            return 6;
+        case KEYS.VK_7:
+            return 7;
+        case KEYS.VK_8:
+            return 8;
+        case KEYS.VK_9:
+            return 9;
+        default:
+            return -1;
     }
 }

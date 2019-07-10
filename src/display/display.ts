@@ -108,6 +108,10 @@ export class DisplayManager {
 
         // alert level
         this.messageDisplay.drawText(1, 4, `Current alert level: ${player.alertLevel}.`, this.textAreaWidth - 2);
+
+        player.inventory.items.forEach((item, index) => {
+            this.messageDisplay.drawText(1, 6 + index, `${index + 1}. ${item.name}`);
+        });
     }
 
     private clearPartial(leftUp: GamePosition, rightDown: GamePosition) {

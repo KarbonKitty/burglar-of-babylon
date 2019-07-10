@@ -21,7 +21,7 @@ function registerActor(actor: Actor) {
 
 const guardTile = { glyph: "G", color: "#f00" };
 
-const player = new Player("Johnny", 58, 58);
+const player = new Player("Johnny", 58, 58, displayManager);
 const guards = [
     new NPC(guardTile, 21, 16, wander),
     new NPC(guardTile, 18, 50, wander),
