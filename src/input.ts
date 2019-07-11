@@ -32,8 +32,9 @@ function useInPosition(position: GamePosition, player: Player, map: GameMap) {
 function useFromInventory(e: KeyboardEvent, player: Player, map: GameMap) {
     const num = numberFromKey(e.keyCode);
 
-    if (num !== -1) {
-        player.inventory.items[num].use(player);
+    if (num > 0) {
+        // table starts at zero, and inventory starts at 1
+        player.inventory.items[num - 1].use(player);
         state = "general";
         player.stopAct();
     }
