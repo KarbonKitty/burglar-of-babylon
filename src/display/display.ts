@@ -1,4 +1,4 @@
-import { Display, FOV } from 'rot-js';
+import { Display, Color } from 'rot-js';
 import { Tile } from './Tile';
 import { GameMap } from '../map';
 import { GamePosition } from '../position';
@@ -17,6 +17,7 @@ export class DisplayManager {
 
     private messageAreaHeight = this.textAreaHeight / 2;
     private interfaceAreaHeight = this.textAreaHeight - this.messageAreaHeight;
+    private lineLength = this.textAreaWidth - 2;
 
     private messageBuffer: string[] = [];
 
@@ -98,7 +99,7 @@ export class DisplayManager {
         const bufferLength = this.messageBuffer.length;
         let line = this.interfaceAreaHeight + 2;
         for (let i = bufferLength - 1; i > 0; i--) {
-            const lines = this.messageDisplay.drawText(1, line, this.messageBuffer[i], this.textAreaWidth - 2);
+            const lines = this.messageDisplay.drawText(1, line, this.messageBuffer[i], this.lineLength);
             line += lines;
             if (line >= this.mainAreaHeight - 2) {
                 break;
@@ -110,10 +111,12 @@ export class DisplayManager {
         this.clearPartial(new GamePosition(0, 0), new GamePosition(this.textAreaWidth, this.interfaceAreaHeight));
 
         // player name
-        this.messageDisplay.drawText(1, 2, player.name, this.textAreaWidth - 2);
+        this.messageDisplay.drawText(1, 2, player.name, this.lineLength);
 
         // alert level
-        this.messageDisplay.drawText(1, 4, `Current alert level: ${player.alertLevel}.`, this.textAreaWidth - 2);
+        const alertColor = Color.toHex(Color.interpolate([200, 200, 200], [255, 0, 0], player.alertLevel / 5));
+        const alertMsg = `%c{ ${alertColor} }Current alert level: ${player.alertLevel} / 5`;
+        this.messageDisplay.drawText(1, 4, alertMsg, this.lineLength);
 
         player.inventory.items.forEach((item, index) => {
             this.messageDisplay.drawText(1, 6 + index, `${index + 1}. ${item.name}`);
