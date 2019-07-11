@@ -102,6 +102,7 @@ export class GameMap {
 export interface IInteractionCommand {
     type: "tile-transformation" | "null";
     payload: IMapTile | null;
+    msg?: string;
 }
 
 export interface IMapTile {

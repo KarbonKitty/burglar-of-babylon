@@ -1,9 +1,9 @@
 import { IMapTile,  IInteractionCommand } from "../map";
 
-const openDoor = () => ({ type: "tile-transformation", payload: tiles.openDoor }) as IInteractionCommand;
-const closeDoor = () => ({ type: "tile-transformation", payload: tiles.door }) as IInteractionCommand;
-
 /* tslint:disable:max-line-length */
+
+const openDoor = () => ({ type: "tile-transformation", payload: tiles.openDoor, msg: "The door has been opened" }) as IInteractionCommand;
+const closeDoor = () => ({ type: "tile-transformation", payload: tiles.door, msg: "The door has been closed" }) as IInteractionCommand;
 
 const tiles = {
     floor: { name: "floor", description: "floor description", tile: { glyph: "⋅", color: "#ccf" }, passable: true, transparent: true },

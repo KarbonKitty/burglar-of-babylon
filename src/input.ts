@@ -69,6 +69,9 @@ export class InputManager {
             if (command.type === 'tile-transformation' && command.payload) {
                 this._map.tileArray[mapIndex] = command.payload;
                 this._map.recalculateFov(this._player.position, 10);
+                if (command.msg) {
+                    this._displayManager.addMessage(command.msg);
+                }
                 return true;
             }
         }
@@ -86,6 +89,7 @@ export class InputManager {
                     this._player.stopAct();
                     break;
                 case KEYS.VK_U:
+                    this._displayManager.addTemporaryMessage("Please select direction");
                     this._state = "use-in-direction";
                     this.actionSlot = this.useInPosition;
                     break;
@@ -104,6 +108,7 @@ export class InputManager {
         if (direction !== null) {
             this.actionSlot(direction);
             this._state = "general";
+            this._displayManager.drawMessages();
         }
     }
 
@@ -120,7 +125,8 @@ export class InputManager {
 
         if (typeof thing !== 'undefined') {
             // table starts at zero, and inventory starts at 1
-            thing.use(this._player);
+            const msg = thing.use(this._player);
+            this._displayManager.addMessage(msg);
             this._state = "general";
             this._displayManager.drawMessages();
             this._player.stopAct();
