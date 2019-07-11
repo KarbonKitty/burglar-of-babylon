@@ -2,152 +2,178 @@ import { Player } from "./actors/player";
 import { GameMap } from "./map";
 import { GamePosition } from "./position";
 import { KEYS } from "rot-js";
-
-export const handleInput = (e: KeyboardEvent, player: Player, map: GameMap) => {
-    if (!player.isPlayerTurn) {
-        return;
-    }
-
-    switch (state) {
-        case "general":
-            handleGeneralKeys(e, player, map);
-            return;
-        case "use-in-direction":
-            useInDirection(e, player, map);
-            return;
-        case "use-from-inventory":
-            useFromInventory(e, player, map);
-            return;
-    }
-};
-
-function useInPosition(position: GamePosition, player: Player, map: GameMap) {
-    const interactionSuccesful = interactInPosition(position, player, map);
-
-    if (interactionSuccesful) {
-        player.stopAct();
-    }
-}
-
-function useFromInventory(e: KeyboardEvent, player: Player, map: GameMap) {
-    const num = numberFromKey(e.keyCode);
-
-    if (num > 0) {
-        // table starts at zero, and inventory starts at 1
-        player.inventory.items[num - 1].use(player);
-        state = "general";
-        player.stopAct();
-    }
-}
-
-let actionSlot: (position: GamePosition, player: Player, map: GameMap) => void;
+import { DisplayManager } from "./display";
 
 type InputState = "general" | "use-in-direction" | "use-from-inventory";
 
-let state: InputState = 'general';
+export class InputManager {
+    private _player: Player;
+    private _map: GameMap;
+    private _displayManager: DisplayManager;
+    private _state: InputState;
 
-function useInDirection(e: KeyboardEvent, player: Player, map: GameMap) {
-    const direction = keyToDirection(player.position, e.keyCode);
+    private actionSlot: (position: GamePosition) => void;
 
-    if (direction !== null) {
-        actionSlot(direction, player, map);
-        state = "general";
+    constructor(player: Player, map: GameMap, displayManager: DisplayManager) {
+        this._player = player;
+        this._map = map;
+        this._displayManager = displayManager;
+
+        this._state = "general";
+
+        this.actionSlot = () => { return; };
     }
-}
 
-function handleGeneralKeys(e: KeyboardEvent, player: Player, map: GameMap) {
-    const direction = keyToDirection(player.position, e.keyCode);
-    if (direction !== null) {
-        handleMove(player, map, direction);
-    } else {
-        switch (e.keyCode) {
-            case KEYS.VK_SPACE:
-                player.stopAct();
-                break;
-            case KEYS.VK_U:
-                state = "use-in-direction";
-                actionSlot = useInPosition;
-                break;
-            case KEYS.VK_I:
-                player.displayInventory();
-                state = "use-from-inventory";
-                break;
+    handleInput(e: KeyboardEvent) {
+        if (!this._player.isPlayerTurn) {
+            return;
+        }
+
+        switch (this._state) {
+            case "general":
+                this.handleGeneralKeys(e);
+                return;
+            case "use-in-direction":
+                this.useInDirection(e);
+                return;
+            case "use-from-inventory":
+                this.useFromInventory(e);
+                return;
         }
     }
-}
 
-function handleMove(player: Player, map: GameMap, newPosition: GamePosition) {
-    const moveSuccessful = tryMoveTo(player, map, newPosition);
-    if (moveSuccessful) {
-        player.stopAct();
+    private handleMove(newPosition: GamePosition) {
+        const moveSuccessful = this.tryMoveTo(newPosition);
+        if (moveSuccessful) {
+            this._player.stopAct();
+        }
     }
-}
 
-function tryMoveTo(player: Player, map: GameMap, newPosition: GamePosition) {
-    if (map.isPositionAvailable(newPosition)) {
-        player.position = newPosition;
-        // TODO: variable sight radius
-        map.recalculateFov(newPosition, 10);
-        return true;
-    } else {
-        return interactInPosition(newPosition, player, map);
-    }
-}
-
-function interactInPosition(position: GamePosition, player: Player, map: GameMap) {
-    const mapIndex = map.positionToIndex(position);
-
-    const interactFunc = map.tileArray[mapIndex].interact;
-    if (typeof interactFunc === 'function') {
-        const command = interactFunc(player, map);
-        if (command.type === 'tile-transformation' && command.payload) {
-            map.tileArray[mapIndex] = command.payload;
-            map.recalculateFov(player.position, 10);
+    private tryMoveTo(newPosition: GamePosition) {
+        if (this._map.isPositionAvailable(newPosition)) {
+            this._player.position = newPosition;
+            // TODO: variable sight radius
+            this._map.recalculateFov(newPosition, 10);
             return true;
+        } else {
+            return this.interactInPosition(newPosition);
         }
     }
 
-    return false;
-}
+    private interactInPosition(position: GamePosition) {
+        const mapIndex = this._map.positionToIndex(position);
 
-function keyToDirection(oldPosition: GamePosition, keyCode: number): GamePosition | null {
-    switch (keyCode) {
-        case KEYS.VK_UP:
-            return oldPosition.north;
-        case KEYS.VK_DOWN:
-            return oldPosition.south;
-        case KEYS.VK_LEFT:
-            return oldPosition.west;
-        case KEYS.VK_RIGHT:
-            return oldPosition.east;
-        default:
-            return null;
+        const interactFunc = this._map.tileArray[mapIndex].interact;
+        if (typeof interactFunc === 'function') {
+            const command = interactFunc(this._player, this._map);
+            if (command.type === 'tile-transformation' && command.payload) {
+                this._map.tileArray[mapIndex] = command.payload;
+                this._map.recalculateFov(this._player.position, 10);
+                return true;
+            }
+        }
+
+        return false;
     }
-}
 
-function numberFromKey(keyCode: number) {
-    switch (keyCode) {
-        case KEYS.VK_0:
-            return 0;
-        case KEYS.VK_1:
-            return 1;
-        case KEYS.VK_2:
-            return 2;
-        case KEYS.VK_3:
-            return 3;
-        case KEYS.VK_4:
-            return 4;
-        case KEYS.VK_5:
-            return 5;
-        case KEYS.VK_6:
-            return 6;
-        case KEYS.VK_7:
-            return 7;
-        case KEYS.VK_8:
-            return 8;
-        case KEYS.VK_9:
-            return 9;
-        default:
-            return -1;
+    private handleGeneralKeys(e: KeyboardEvent) {
+        const direction = this.keyToDirection(this._player.position, e.keyCode);
+        if (direction !== null) {
+            this.handleMove(direction);
+        } else {
+            switch (e.keyCode) {
+                case KEYS.VK_SPACE:
+                    this._player.stopAct();
+                    break;
+                case KEYS.VK_U:
+                    this._state = "use-in-direction";
+                    this.actionSlot = this.useInPosition;
+                    break;
+                case KEYS.VK_I:
+                    this._displayManager.addTemporaryMessage(
+                        "Please select an item to use (press corresponding number)");
+                    this._state = "use-from-inventory";
+                    break;
+            }
+        }
+    }
+
+    private useInDirection(e: KeyboardEvent) {
+        const direction = this.keyToDirection(this._player.position, e.keyCode);
+
+        if (direction !== null) {
+            this.actionSlot(direction);
+            this._state = "general";
+        }
+    }
+
+    private useFromInventory(e: KeyboardEvent) {
+        const num = this.numberFromKey(e.keyCode);
+
+        if (num === -1) {
+            this._state = "general";
+            this._displayManager.drawMessages();
+            return;
+        }
+
+        const thing = this._player.inventory.items[num - 1];
+
+        if (typeof thing !== 'undefined') {
+            // table starts at zero, and inventory starts at 1
+            thing.use(this._player);
+            this._state = "general";
+            this._displayManager.drawMessages();
+            this._player.stopAct();
+        }
+    }
+
+    private useInPosition(position: GamePosition) {
+        const interactionSuccesful = this.interactInPosition(position);
+
+        if (interactionSuccesful) {
+            this._player.stopAct();
+        }
+    }
+
+    private keyToDirection(oldPosition: GamePosition, keyCode: number): GamePosition | null {
+        switch (keyCode) {
+            case KEYS.VK_UP:
+                return oldPosition.north;
+            case KEYS.VK_DOWN:
+                return oldPosition.south;
+            case KEYS.VK_LEFT:
+                return oldPosition.west;
+            case KEYS.VK_RIGHT:
+                return oldPosition.east;
+            default:
+                return null;
+        }
+    }
+
+    private numberFromKey(keyCode: number) {
+        switch (keyCode) {
+            case KEYS.VK_0:
+                return 0;
+            case KEYS.VK_1:
+                return 1;
+            case KEYS.VK_2:
+                return 2;
+            case KEYS.VK_3:
+                return 3;
+            case KEYS.VK_4:
+                return 4;
+            case KEYS.VK_5:
+                return 5;
+            case KEYS.VK_6:
+                return 6;
+            case KEYS.VK_7:
+                return 7;
+            case KEYS.VK_8:
+                return 8;
+            case KEYS.VK_9:
+                return 9;
+            default:
+                return -1;
+        }
     }
 }

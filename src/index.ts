@@ -4,7 +4,7 @@ import { Player } from './actors/player';
 import { NPC } from './actors/NPC';
 import { GameMap } from './map';
 import { map as officeMap } from './data/office';
-import { handleInput } from './input';
+import { InputManager } from './input';
 import { GameEngine } from './engine';
 import { wander } from './actors/ai';
 import { Actor } from './actors/actor';
@@ -21,7 +21,7 @@ function registerActor(actor: Actor) {
 
 const guardTile = { glyph: "G", color: "#f00" };
 
-const player = new Player("Johnny", 58, 58, displayManager);
+const player = new Player("Johnny", 58, 58);
 const guards = [
     new NPC(guardTile, 21, 16, wander),
     new NPC(guardTile, 18, 50, wander),
@@ -40,6 +40,8 @@ const redraw = (p: Player) => {
     displayManager.drawInterface(p);
 };
 
+const inputManager = new InputManager(player, office, displayManager);
+
 window.onload = () => {
     // first draw
     // TODO: variable sight radius
@@ -50,7 +52,7 @@ window.onload = () => {
     redraw(player);
 
     // handle inputs
-    addEventListener("keydown", e => handleInput(e, player, office));
+    addEventListener("keydown", e => inputManager.handleInput(e));
 
     addEventListener('mousedown', e => {
         const p = displayManager.gameDisplay.eventToPosition(e);

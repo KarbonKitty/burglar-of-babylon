@@ -1,7 +1,7 @@
 import { Actor } from "./actor";
 import { GameMap } from "../map";
 import { GamePosition } from "../position";
-import { Tile, DisplayManager } from "../display";
+import { Tile } from "../display";
 import { Inventory } from "../items/inventory";
 import { items } from "../data/items";
 
@@ -15,13 +15,11 @@ export class Player implements Actor {
 
     private _resolve: ((value?: void | PromiseLike<void> | undefined) => void) | null = null;
     private _map: GameMap | null = null;
-    private _display: DisplayManager;
 
-    constructor(name: string, x: number, y: number, displayManager: DisplayManager) {
+    constructor(name: string, x: number, y: number) {
         this.position = new GamePosition(x, y);
         this.name = name;
         this.tile = { glyph: '@', color: '#ffffff' };
-        this._display = displayManager;
         this.inventory.items.push(items.signalJammer);
     }
 
@@ -34,12 +32,7 @@ export class Player implements Actor {
     stopAct() {
         this.isPlayerTurn = false;
         this.checkAlertLevel();
-        this._display.drawMessages();
         this._resolve!();
-    }
-
-    displayInventory() {
-        this._display.addTemporaryMessage("Please select an item to use (press corresponding number)");
     }
 
     private checkAlertLevel() {
