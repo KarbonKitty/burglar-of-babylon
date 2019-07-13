@@ -52,8 +52,7 @@ export class InputManager {
     private tryMoveTo(newPosition: GamePosition) {
         if (this._map.isPositionAvailable(newPosition)) {
             this._player.position = newPosition;
-            // TODO: variable sight radius
-            this._map.recalculateFov(newPosition, 10);
+            this._map.recalculateFov(newPosition, this._player.sightRadius);
             return true;
         } else {
             return this.interactInPosition(newPosition);
@@ -68,7 +67,7 @@ export class InputManager {
             const command = interactFunc(this._player, this._map);
             if (command.type === 'tile-transformation' && command.payload) {
                 this._map.tileArray[mapIndex] = command.payload;
-                this._map.recalculateFov(this._player.position, 10);
+                this._map.recalculateFov(this._player.position, this._player.sightRadius);
                 if (command.msg) {
                     this._displayManager.addMessage(command.msg);
                 }

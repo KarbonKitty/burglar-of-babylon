@@ -10,6 +10,7 @@ export class Player implements Actor {
     name: string;
     tile: Tile;
     position: GamePosition;
+    sightRadius = 10;
     isPlayerTurn: boolean = false;
     alertLevel: number = 0;
     inventory = new Inventory();

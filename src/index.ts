@@ -17,10 +17,10 @@ const gameManager = new GameManager(player, office, displayManager, inputManager
 const guardTile = { glyph: "G", color: "#f00" };
 
 const guards = [
-    new NPC(guardTile, 21, 16, wander),
-    new NPC(guardTile, 18, 50, wander),
-    new NPC(guardTile, 6, 24, wander),
-    new NPC(guardTile, 50, 30, wander)];
+    new NPC(guardTile, 21, 16, 5, wander),
+    new NPC(guardTile, 18, 50, 5, wander),
+    new NPC(guardTile, 6, 24, 5, wander),
+    new NPC(guardTile, 50, 30, 5, wander)];
 
 gameManager.registerActor(guards[0]);
 gameManager.registerActor(guards[1]);
