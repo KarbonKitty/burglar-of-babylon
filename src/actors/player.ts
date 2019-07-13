@@ -4,6 +4,7 @@ import { GamePosition } from "../position";
 import { Tile } from "../display";
 import { Inventory } from "../items/inventory";
 import { items } from "../data/items";
+import { time } from "../time";
 
 export class Player implements Actor {
     name: string;
@@ -20,7 +21,10 @@ export class Player implements Actor {
         this.position = new GamePosition(x, y);
         this.name = name;
         this.tile = { glyph: '@', color: '#ffffff' };
+
+        // TODO: move this somewhere else
         this.inventory.items.push(items.signalJammer);
+        this.inventory.items.push(items.watch);
     }
 
     act(map: GameMap): Promise<void> {
@@ -32,6 +36,7 @@ export class Player implements Actor {
     stopAct() {
         this.isPlayerTurn = false;
         this.checkAlertLevel();
+        time.tick(1000);
         this._resolve!();
     }
 
