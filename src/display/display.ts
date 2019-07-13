@@ -118,7 +118,7 @@ export class DisplayManager {
         const alertMsg = `%c{ ${alertColor} }Current alert level: ${player.alertLevel} / 5`;
         this.messageDisplay.drawText(1, 4, alertMsg, this.lineLength);
 
-        player.inventory.items.forEach((item, index) => {
+        player.inventory.getAllItemsInfo().forEach((item, index) => {
             this.messageDisplay.drawText(1, 6 + index, `${index + 1}. ${item.name}`);
         });
     }

@@ -24,8 +24,8 @@ export class Player implements Actor {
         this.tile = { glyph: '@', color: '#ffffff' };
 
         // TODO: move this somewhere else
-        this.inventory.items.push(items.signalJammer);
-        this.inventory.items.push(items.watch);
+        this.inventory.addItem(items.signalJammer);
+        this.inventory.addItem(items.watch);
     }
 
     act(map: GameMap): Promise<void> {

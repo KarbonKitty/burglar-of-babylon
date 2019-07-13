@@ -11,7 +11,7 @@ export const items = {
         } else {
             return "There is no alert for signal jammer to reduce.";
         }
-    }),
+    }, 1),
     watch: new Item("watch", "@", user => {
         return new Date(time.time).toISOString().split('.')[0].split('T').join(' ');
     })

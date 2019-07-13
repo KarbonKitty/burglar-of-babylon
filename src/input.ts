@@ -120,12 +120,10 @@ export class InputManager {
             return;
         }
 
-        const thing = this._player.inventory.items[num - 1];
+        const result = this._player.inventory.useItem(num - 1, this._player);
 
-        if (typeof thing !== 'undefined') {
-            // table starts at zero, and inventory starts at 1
-            const msg = thing.use(this._player);
-            this._displayManager.addMessage(msg);
+        if (result !== null) {
+            this._displayManager.addMessage(result);
             this._state = "general";
             this._displayManager.drawMessages();
             this._player.stopAct();
