@@ -144,12 +144,20 @@ export class InputManager {
     private keyToDirection(oldPosition: GamePosition, keyCode: number): GamePosition | null {
         switch (keyCode) {
             case KEYS.VK_UP:
+            case KEYS.VK_W:
+            case KEYS.VK_K:
                 return oldPosition.north;
             case KEYS.VK_DOWN:
+            case KEYS.VK_S:
+            case KEYS.VK_J:
                 return oldPosition.south;
             case KEYS.VK_LEFT:
+            case KEYS.VK_A:
+            case KEYS.VK_H:
                 return oldPosition.west;
             case KEYS.VK_RIGHT:
+            case KEYS.VK_D:
+            case KEYS.VK_L:
                 return oldPosition.east;
             default:
                 return null;
