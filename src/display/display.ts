@@ -98,7 +98,7 @@ export class DisplayManager {
             new GamePosition(this.textAreaWidth, this.textAreaHeight));
         const bufferLength = this.messageBuffer.length;
         let line = this.interfaceAreaHeight + 2;
-        for (let i = bufferLength - 1; i > 0; i--) {
+        for (let i = bufferLength - 1; i >= 0; i--) {
             const lines = this.messageDisplay.drawText(1, line, this.messageBuffer[i], this.lineLength);
             line += lines;
             if (line >= this.mainAreaHeight - 2) {
