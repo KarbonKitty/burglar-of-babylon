@@ -3,6 +3,7 @@ import { Actor } from "../actors/actor";
 
 export class Inventory {
     private items: Item[];
+    private limit = 10;
 
     constructor() {
         this.items = [];
@@ -17,7 +18,12 @@ export class Inventory {
     }
 
     addItem(item: Item) {
-        this.items.push(item);
+        if (this.items.length < this.limit) {
+            this.items.push(item);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     removeItem(item: Item) {
