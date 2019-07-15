@@ -102,6 +102,9 @@ export class InputManager {
                     this._displayManager.addMessage(msg);
                     this._displayManager.drawInterface(this._player);
                     break;
+                case KEYS.VK_P:
+                    this._displayManager.showHelp();
+                    break;
             }
         }
     }

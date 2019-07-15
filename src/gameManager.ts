@@ -61,6 +61,8 @@ export class GameManager {
             }
         });
 
+        this.displayManager.addMessage("Welcome to Vratislavia! Press 'p' for help.");
+
         this.startEngine();
     }
 }

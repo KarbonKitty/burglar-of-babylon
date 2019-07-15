@@ -121,6 +121,24 @@ export class DisplayManager {
         });
     }
 
+    showHelp() {
+        const helpData = ["Welcome to Burglar of Vratislavia!",
+            "",
+            "Move around with arrow keys, WASD or HJKL",
+            "Press 'u' to use open doors open or close them",
+            "    (you can just bump into closed doors to open them, too)",
+            "Press 'i' followed by a number to use item from your inventory",
+            "Press 'g' to pick up item from the ground",
+            "    (you can only have ten items in the inventory!)",
+            "Alert level raises whenever you end turn on the red square, which marks guards' field of view.",
+            "Use signal jammers to reduce it!"];
+
+        let oldBuffer = this.messageBuffer;
+        this.messageBuffer = helpData;
+        this.drawMessages();
+        this.messageBuffer = oldBuffer;
+    }
+
     private clearPartial(leftUp: GamePosition, rightDown: GamePosition) {
         for (let i = leftUp.x; i <= rightDown.x; i++) {
             for (let j = leftUp.y; j <= rightDown.y; j++) {
