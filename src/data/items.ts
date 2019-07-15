@@ -4,7 +4,7 @@ import { time } from "../time";
 
 // TODO: create itemManager to create instances
 export const items = {
-    signalJammer: new ItemTemplate("signal jammer", { glyph: "%", color: "#00f" }, user => {
+    signalJammer: new ItemTemplate("signal jammer", { glyph: "%", color: "#99f" }, user => {
         if (typeof (user as Player).alertLevel !== 'undefined' && (user as Player).alertLevel > 0) {
             (user as Player).alertLevel -= 1;
             return "Signal jammer have reduced the alert level by 1!";

@@ -25,10 +25,10 @@ const guards = [
     new NPC(guardTile, 6, 24, 5, wander),
     new NPC(guardTile, 50, 30, 5, wander)];
 
-office.itemsList.set(office.positionToIndex(new GamePosition(57, 57)), new Item(items.signalJammer));
-office.itemsList.set(office.positionToIndex(new GamePosition(56, 56)), new Item(items.signalJammer));
-office.itemsList.set(office.positionToIndex(new GamePosition(57, 55)), new Item(items.signalJammer));
-office.itemsList.set(office.positionToIndex(new GamePosition(57, 53)), new Item(items.signalJammer));
+office.itemsList.set(office.positionToIndex(new GamePosition(40, 40)), new Item(items.signalJammer));
+office.itemsList.set(office.positionToIndex(new GamePosition(57, 19)), new Item(items.signalJammer));
+office.itemsList.set(office.positionToIndex(new GamePosition(58, 2)), new Item(items.signalJammer));
+office.itemsList.set(office.positionToIndex(new GamePosition(19, 58)), new Item(items.signalJammer));
 
 gameManager.registerActor(guards[0]);
 gameManager.registerActor(guards[1]);
