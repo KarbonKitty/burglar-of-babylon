@@ -131,7 +131,7 @@ export class DisplayManager {
             "Press 'g' to pick up item from the ground",
             "    (you can only have ten items in the inventory!)",
             "Alert level raises whenever you end turn on the red square, which marks guards' field of view.",
-            "Use signal jammers to reduce it!"];
+            "Use signal jammers to reduce it!"].reverse();
 
         let oldBuffer = this.messageBuffer;
         this.messageBuffer = helpData;
