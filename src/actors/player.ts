@@ -5,6 +5,7 @@ import { Tile } from "../display";
 import { Inventory } from "../items/inventory";
 import { items } from "../data/items";
 import { time } from "../time";
+import { Item } from "../items/item";
 
 export class Player implements Actor {
     name: string;
@@ -24,8 +25,7 @@ export class Player implements Actor {
         this.tile = { glyph: '@', color: '#ffffff' };
 
         // TODO: move this somewhere else
-        this.inventory.addItem(items.signalJammer);
-        this.inventory.addItem(items.watch);
+        this.inventory.addItem(new Item(items.watch));
     }
 
     act(map: GameMap): Promise<void> {

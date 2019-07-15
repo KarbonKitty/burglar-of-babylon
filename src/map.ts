@@ -5,10 +5,12 @@ import { mapTiles } from "./data/tiles";
 import { FOV } from "rot-js";
 import RecursiveShadowcasting from "rot-js/lib/fov/recursive-shadowcasting";
 import { Player } from "./actors/player";
+import { Item } from "./items/item";
 
 export class GameMap {
     tileArray: IMapTile[] = [];
     actorList: Actor[] = [];
+    itemsList: Map<number, Item> = new Map<number, Item>();
 
     playerMemory: boolean[] = [];
     visibilityMask: boolean[] = [];
@@ -83,6 +85,22 @@ export class GameMap {
         const index = this.xyToIndex(x, y);
         if (this.visibilityMask[index]) {
             return this.tileArray[index].name;
+        }
+    }
+
+    tryPickUp(player: Player): string {
+        const index = this.positionToIndex(player.position);
+        const thing = this.itemsList.get(index);
+        if (typeof thing !== 'undefined') {
+            const pickUpSuccess = player.inventory.addItem(thing);
+            if (pickUpSuccess) {
+                this.itemsList.delete(index);
+                return `You have picked up ${thing.name}`;
+            } else {
+                return `You have no space in inventory to pick ${thing.name} up!`;
+            }
+        } else {
+            return `There is nothing here!`;
         }
     }
 

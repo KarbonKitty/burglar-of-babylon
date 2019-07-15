@@ -75,10 +75,8 @@ export class DisplayManager {
                 this.draw(this.invisibleTile, map.positionFromIndex(index), "#222");
             }
         });
-        map.actorList.forEach(actor =>
-            map.visibilityMask[map.width * actor.position.y + actor.position.x] ?
-            this.draw(actor.tile, actor.position) :
-            0);
+        map.itemsList.forEach((item, index) => map.visibilityMask[index] ? this.draw(item.tile, map.positionFromIndex(index)) : 0);
+        map.actorList.forEach(actor => map.visibilityMask[map.positionToIndex(actor.position)] ? this.draw(actor.tile, actor.position) : 0);
     }
 
     addMessage(msg: string) {

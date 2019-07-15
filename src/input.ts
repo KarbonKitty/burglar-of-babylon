@@ -97,6 +97,11 @@ export class InputManager {
                         "Please select an item to use (press corresponding number)");
                     this._state = "use-from-inventory";
                     break;
+                case KEYS.VK_G:
+                    const msg = this._map.tryPickUp(this._player);
+                    this._displayManager.addMessage(msg);
+                    this._displayManager.drawInterface(this._player);
+                    break;
             }
         }
     }

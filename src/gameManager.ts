@@ -61,7 +61,6 @@ export class GameManager {
             }
         });
 
-        //
         this.startEngine();
     }
 }

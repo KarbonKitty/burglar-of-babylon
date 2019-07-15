@@ -1,16 +1,20 @@
 import { Actor } from "../actors/actor";
+import { Tile } from "../display";
 
 export class Item {
     name: string;
-    glyph: string;
+    tile: Tile;
     usesLeft?: number;
     use: (user: Actor) => string;
 
-    constructor(name: string, glyph: string, useFunc: (user: Actor) => string, usesLeft?: number) {
-        this.name = name;
-        this.glyph = glyph;
-        this.usesLeft = usesLeft;
-        this.use = useFunc;
+    // this is required to stop ItemTemplate being compatible with Item
+    template = false;
+
+    constructor(template: ItemTemplate) {
+        this.name = template.name;
+        this.tile = template.tile;
+        this.usesLeft = template.usesLeft;
+        this.use = template.use;
     }
 }
 
@@ -20,6 +24,23 @@ export class ItemInfo {
 
     constructor(item: Item) {
         this.name = item.name;
-        this.glyph = item.glyph;
+        this.glyph = item.tile.glyph;
+    }
+}
+
+export class ItemTemplate {
+    name: string;
+    tile: Tile;
+    usesLeft?: number;
+    use: (user: Actor) => string;
+
+    // this is required to stop ItemTemplate being compatible with Item
+    template = "template";
+
+    constructor(name: string, tile: Tile, useFunc: (user: Actor) => string, usesLeft?: number) {
+        this.name = name;
+        this.tile = tile;
+        this.usesLeft = usesLeft;
+        this.use = useFunc;
     }
 }

@@ -6,6 +6,9 @@ import { map as officeMap } from './data/office';
 import { InputManager } from './input';
 import { wander } from './actors/ai';
 import { GameManager } from './gameManager';
+import { items } from './data/items';
+import { GamePosition } from './position';
+import { Item } from './items/item';
 
 const displayManager = new DisplayManager();
 const office = new GameMap(officeMap);
@@ -21,6 +24,11 @@ const guards = [
     new NPC(guardTile, 18, 50, 5, wander),
     new NPC(guardTile, 6, 24, 5, wander),
     new NPC(guardTile, 50, 30, 5, wander)];
+
+office.itemsList.set(office.positionToIndex(new GamePosition(57, 57)), new Item(items.signalJammer));
+office.itemsList.set(office.positionToIndex(new GamePosition(56, 56)), new Item(items.signalJammer));
+office.itemsList.set(office.positionToIndex(new GamePosition(57, 55)), new Item(items.signalJammer));
+office.itemsList.set(office.positionToIndex(new GamePosition(57, 53)), new Item(items.signalJammer));
 
 gameManager.registerActor(guards[0]);
 gameManager.registerActor(guards[1]);
