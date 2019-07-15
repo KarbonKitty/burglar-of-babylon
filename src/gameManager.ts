@@ -5,7 +5,7 @@ import { GameEngine } from "./engine";
 import { DisplayManager } from "./display";
 import { Actor } from "./actors/actor";
 import { Player } from "./actors/player";
-import { InputManager } from "./input";
+import { inputManager } from "./input";
 
 export class GameManager {
     map: GameMap;
@@ -13,13 +13,11 @@ export class GameManager {
     engine: GameEngine;
     displayManager: DisplayManager;
     player: Player;
-    inputManager: InputManager;
 
-    constructor(player: Player, map: GameMap, displayManager: DisplayManager, inputManager: InputManager) {
+    constructor(player: Player, map: GameMap, displayManager: DisplayManager) {
         this.player = player;
         this.map = map;
         this.displayManager = displayManager;
-        this.inputManager = inputManager;
 
         this.scheduler = new Scheduler.Simple();
         this.engine = new GameEngine(this.scheduler, map);
@@ -50,8 +48,10 @@ export class GameManager {
         this.displayManager.drawInterface(this.player);
         this.redraw();
 
+        const inputHandler = inputManager.handleInput.bind(inputManager, this.player, this.map, this.displayManager);
+
         // register input handlers
-        addEventListener("keydown", e => this.inputManager.handleInput(e));
+        addEventListener("keydown", e => inputHandler(e));
 
         addEventListener("mousedown", e => {
             const p = this.displayManager.gameDisplay.eventToPosition(e);

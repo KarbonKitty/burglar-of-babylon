@@ -6,70 +6,63 @@ import { DisplayManager } from "./display";
 
 type InputState = "general" | "use-in-direction" | "use-from-inventory";
 
-export class InputManager {
-    private _player: Player;
-    private _map: GameMap;
-    private _displayManager: DisplayManager;
+class InputManager {
     private _state: InputState;
 
-    private actionSlot: (position: GamePosition) => void;
+    private actionSlot: (player: Player, map: GameMap, position: GamePosition, displayManager: DisplayManager) => void;
 
-    constructor(player: Player, map: GameMap, displayManager: DisplayManager) {
-        this._player = player;
-        this._map = map;
-        this._displayManager = displayManager;
-
+    constructor() {
         this._state = "general";
 
         this.actionSlot = () => { return; };
     }
 
-    handleInput(e: KeyboardEvent) {
-        if (!this._player.isPlayerTurn) {
+    handleInput(player: Player, map: GameMap, displayManager: DisplayManager, e: KeyboardEvent) {
+        if (!player.isPlayerTurn) {
             return;
         }
 
         switch (this._state) {
             case "general":
-                this.handleGeneralKeys(e);
+                this.handleGeneralKeys(e, player, map, displayManager);
                 return;
             case "use-in-direction":
-                this.useInDirection(e);
+                this.useInDirection(e, player, map, displayManager);
                 return;
             case "use-from-inventory":
-                this.useFromInventory(e);
+                this.useFromInventory(e, player, displayManager);
                 return;
         }
     }
 
-    private handleMove(newPosition: GamePosition) {
-        const moveSuccessful = this.tryMoveTo(newPosition);
+    private handleMove(player: Player, map: GameMap, newPosition: GamePosition, displayManager: DisplayManager) {
+        const moveSuccessful = this.tryMoveTo(player, map, newPosition, displayManager);
         if (moveSuccessful) {
-            this._player.stopAct();
+            player.stopAct();
         }
     }
 
-    private tryMoveTo(newPosition: GamePosition) {
-        if (this._map.isPositionAvailable(newPosition)) {
-            this._player.position = newPosition;
-            this._map.recalculateFov(newPosition, this._player.sightRadius);
+    private tryMoveTo(player: Player, map: GameMap, newPosition: GamePosition, displayManager: DisplayManager) {
+        if (map.isPositionAvailable(newPosition)) {
+            player.position = newPosition;
+            map.recalculateFov(newPosition, player.sightRadius);
             return true;
         } else {
-            return this.interactInPosition(newPosition);
+            return this.interactInPosition(player, map, newPosition, displayManager);
         }
     }
 
-    private interactInPosition(position: GamePosition) {
-        const mapIndex = this._map.positionToIndex(position);
+    private interactInPosition(player: Player, map: GameMap, position: GamePosition, displayManager: DisplayManager) {
+        const mapIndex = map.positionToIndex(position);
 
-        const interactFunc = this._map.tileArray[mapIndex].interact;
+        const interactFunc = map.tileArray[mapIndex].interact;
         if (typeof interactFunc === 'function') {
-            const command = interactFunc(this._player, this._map);
+            const command = interactFunc(player, map);
             if (command.type === 'tile-transformation' && command.payload) {
-                this._map.tileArray[mapIndex] = command.payload;
-                this._map.recalculateFov(this._player.position, this._player.sightRadius);
+                map.tileArray[mapIndex] = command.payload;
+                map.recalculateFov(player.position, player.sightRadius);
                 if (command.msg) {
-                    this._displayManager.addMessage(command.msg);
+                    displayManager.addMessage(command.msg);
                 }
                 return true;
             }
@@ -78,71 +71,71 @@ export class InputManager {
         return false;
     }
 
-    private handleGeneralKeys(e: KeyboardEvent) {
-        const direction = this.keyToDirection(this._player.position, e.keyCode);
+    private handleGeneralKeys(e: KeyboardEvent, player: Player, map: GameMap, displayManager: DisplayManager) {
+        const direction = this.keyToDirection(player.position, e.keyCode);
         if (direction !== null) {
-            this.handleMove(direction);
+            this.handleMove(player, map, direction, displayManager);
         } else {
             switch (e.keyCode) {
                 case KEYS.VK_SPACE:
-                    this._player.stopAct();
+                    player.stopAct();
                     break;
                 case KEYS.VK_U:
-                    this._displayManager.addTemporaryMessage("Please select direction");
+                    displayManager.addTemporaryMessage("Please select direction");
                     this._state = "use-in-direction";
                     this.actionSlot = this.useInPosition;
                     break;
                 case KEYS.VK_I:
-                    this._displayManager.addTemporaryMessage(
+                    displayManager.addTemporaryMessage(
                         "Please select an item to use (press corresponding number)");
                     this._state = "use-from-inventory";
                     break;
                 case KEYS.VK_G:
-                    const msg = this._map.tryPickUp(this._player);
-                    this._displayManager.addMessage(msg);
-                    this._displayManager.drawInterface(this._player);
+                    const msg = map.tryPickUp(player);
+                    displayManager.addMessage(msg);
+                    displayManager.drawInterface(player);
                     break;
                 case KEYS.VK_P:
-                    this._displayManager.showHelp();
+                    displayManager.showHelp();
                     break;
             }
         }
     }
 
-    private useInDirection(e: KeyboardEvent) {
-        const direction = this.keyToDirection(this._player.position, e.keyCode);
+    private useInDirection(e: KeyboardEvent, player: Player, map: GameMap, displayManager: DisplayManager) {
+        const direction = this.keyToDirection(player.position, e.keyCode);
 
         if (direction !== null) {
-            this.actionSlot(direction);
+            this.actionSlot(player, map, direction, displayManager);
             this._state = "general";
-            this._displayManager.drawMessages();
+            displayManager.drawMessages();
         }
     }
 
-    private useFromInventory(e: KeyboardEvent) {
+    private useFromInventory(e: KeyboardEvent, player: Player, displayManager: DisplayManager) {
         const num = this.numberFromKey(e.keyCode);
 
         if (num === -1) {
             this._state = "general";
-            this._displayManager.drawMessages();
+            displayManager.drawMessages();
             return;
         }
 
-        const result = this._player.inventory.useItem(num - 1, this._player);
+        const result = player.inventory.useItem(num - 1, player);
 
         if (result !== null) {
-            this._displayManager.addMessage(result);
+            displayManager.addMessage(result);
             this._state = "general";
-            this._displayManager.drawMessages();
-            this._player.stopAct();
+            displayManager.drawMessages();
+            player.stopAct();
         }
     }
 
-    private useInPosition(position: GamePosition) {
-        const interactionSuccesful = this.interactInPosition(position);
+    private useInPosition(player: Player, map: GameMap, position: GamePosition, displayManager: DisplayManager) {
+        const interactionSuccesful = this.interactInPosition(player, map, position, displayManager);
 
         if (interactionSuccesful) {
-            this._player.stopAct();
+            player.stopAct();
         }
     }
 
@@ -196,3 +189,5 @@ export class InputManager {
         }
     }
 }
+
+export const inputManager = new InputManager();

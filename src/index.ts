@@ -3,7 +3,6 @@ import { Player } from './actors/player';
 import { NPC } from './actors/NPC';
 import { GameMap } from './map';
 import { map as officeMap } from './data/office';
-import { InputManager } from './input';
 import { wander } from './actors/ai';
 import { GameManager } from './gameManager';
 import { items } from './data/items';
@@ -13,9 +12,8 @@ import { Item } from './items/item';
 const displayManager = new DisplayManager();
 const office = new GameMap(officeMap);
 const player = new Player("Johnny", 58, 58);
-const inputManager = new InputManager(player, office, displayManager);
 
-const gameManager = new GameManager(player, office, displayManager, inputManager);
+const gameManager = new GameManager(player, office, displayManager);
 
 const guardTile = { glyph: "G", color: "#f00" };
 
