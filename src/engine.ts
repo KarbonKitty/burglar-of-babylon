@@ -17,7 +17,7 @@ export class GameEngine {
             if (!actor) {
                 break;
             }
-            await actor.act(this.map);
+            await actor.act(actor, this.map);
             drawFunction();
         }
     }

@@ -3,11 +3,11 @@ import { Player } from './actors/player';
 import { NPC } from './actors/NPC';
 import { GameMap } from './map';
 import { map as officeMap } from './data/office';
-import { wander } from './actors/ai';
 import { GameManager } from './gameManager';
 import { items } from './data/items';
 import { GamePosition } from './position';
 import { Item } from './items/item';
+import { Wanderer } from './actors/ai';
 
 const displayManager = new DisplayManager();
 const office = new GameMap(officeMap);
@@ -18,10 +18,10 @@ const gameManager = new GameManager(player, office, displayManager);
 const guardTile = { glyph: "G", color: "#f00" };
 
 const guards = [
-    new NPC(guardTile, 21, 16, 5, wander),
-    new NPC(guardTile, 18, 50, 5, wander),
-    new NPC(guardTile, 6, 24, 5, wander),
-    new NPC(guardTile, 50, 30, 5, wander)];
+    new NPC(guardTile, 21, 16, 5, new Wanderer()),
+    new NPC(guardTile, 18, 50, 5, new Wanderer()),
+    new NPC(guardTile, 6, 24, 5, new Wanderer()),
+    new NPC(guardTile, 50, 30, 5, new Wanderer())];
 
 office.itemsList.set(office.positionToIndex(new GamePosition(40, 40)), new Item(items.signalJammer));
 office.itemsList.set(office.positionToIndex(new GamePosition(57, 19)), new Item(items.signalJammer));

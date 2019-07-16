@@ -28,7 +28,7 @@ export class Player implements Actor {
         this.inventory.addItem(new Item(items.watch));
     }
 
-    act(map: GameMap): Promise<void> {
+    act(actor: Actor, map: GameMap): Promise<void> {
         this.isPlayerTurn = true;
         this._map = map;
         return new Promise((resolve) => this._resolve = resolve);

@@ -6,5 +6,5 @@ export interface Actor {
     tile: Tile;
     position: GamePosition;
     sightRadius: number;
-    act(map: GameMap): Promise<void>;
+    act(actor: Actor, map: GameMap): Promise<void>;
 }

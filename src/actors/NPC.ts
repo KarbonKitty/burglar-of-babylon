@@ -2,17 +2,21 @@ import { Actor } from "./actor";
 import { GameMap } from "../map";
 import { Tile } from '../display';
 import { GamePosition } from "../position";
+import { AI } from "./ai";
 
 export class NPC implements Actor {
     tile: Tile;
     position: GamePosition;
     sightRadius: number;
-    act: (map: GameMap) => Promise<void>;
+    act: (actor: Actor, map: GameMap) => Promise<void>;
 
-    constructor(tile: Tile, x: number, y: number, sightRadius: number, ai: (actor: Actor, map: GameMap) => Promise<void>) {
+    private ai: AI;
+
+    constructor(tile: Tile, x: number, y: number, sightRadius: number, ai: AI) {
         this.position = new GamePosition(x, y);
         this.tile = tile;
         this.sightRadius = sightRadius;
-        this.act = ai.bind(null, this);
+        this.ai = ai;
+        this.act = ai.act;
     }
 }
