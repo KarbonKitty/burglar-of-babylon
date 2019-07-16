@@ -33,7 +33,7 @@ export class Inventory {
         }
     }
 
-    useItem(index: number, actor: Actor): string | null {
+    async useItem(index: number, actor: Actor): Promise<string | null> {
         const thing = this.items[index];
         if (typeof thing !== 'undefined') {
             const msg = thing.use(actor);

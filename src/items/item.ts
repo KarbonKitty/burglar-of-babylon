@@ -5,7 +5,7 @@ export class Item {
     name: string;
     tile: Tile;
     usesLeft?: number;
-    use: (user: Actor) => string;
+    use: (user: Actor) => Promise<string>;
 
     // this is required to stop ItemTemplate being compatible with Item
     template = false;
@@ -32,12 +32,12 @@ export class ItemTemplate {
     name: string;
     tile: Tile;
     usesLeft?: number;
-    use: (user: Actor) => string;
+    use: (user: Actor) => Promise<string>;
 
     // this is required to stop ItemTemplate being compatible with Item
     template = "template";
 
-    constructor(name: string, tile: Tile, useFunc: (user: Actor) => string, usesLeft?: number) {
+    constructor(name: string, tile: Tile, useFunc: (user: Actor) => Promise<string>, usesLeft?: number) {
         this.name = name;
         this.tile = tile;
         this.usesLeft = usesLeft;

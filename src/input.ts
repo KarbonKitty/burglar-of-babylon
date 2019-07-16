@@ -4,16 +4,18 @@ import { GamePosition } from "./position";
 import { KEYS } from "rot-js";
 import { DisplayManager } from "./display";
 
-type InputState = "general" | "use-in-direction" | "use-from-inventory";
+type InputState = "general" | "use-in-direction" | "use-from-inventory" | "get-direction";
 
 class InputManager {
     private _state: InputState;
 
+    private _awaiter: (value?: GamePosition | PromiseLike<GamePosition> | undefined) => void;
     private actionSlot: (player: Player, map: GameMap, position: GamePosition, displayManager: DisplayManager) => void;
 
     constructor() {
         this._state = "general";
 
+        this._awaiter = () => { return; };
         this.actionSlot = () => { return; };
     }
 
@@ -32,7 +34,20 @@ class InputManager {
             case "use-from-inventory":
                 this.useFromInventory(e, player, displayManager);
                 return;
+            case "get-direction":
+                const dir = this.keyToDirection(player.position, e.keyCode);
+                if (dir !== null) {
+                    this._awaiter(dir);
+                }
+                return;
         }
+    }
+
+    async getDirection(): Promise<GamePosition> {
+        this._state = "get-direction";
+        const p = new Promise<GamePosition>(resolve => this._awaiter = resolve);
+        const dir = await p;
+        return dir;
     }
 
     private handleMove(player: Player, map: GameMap, newPosition: GamePosition, displayManager: DisplayManager) {
@@ -112,7 +127,7 @@ class InputManager {
         }
     }
 
-    private useFromInventory(e: KeyboardEvent, player: Player, displayManager: DisplayManager) {
+    private async useFromInventory(e: KeyboardEvent, player: Player, displayManager: DisplayManager) {
         const num = this.numberFromKey(e.keyCode);
 
         if (num === -1) {
@@ -121,7 +136,7 @@ class InputManager {
             return;
         }
 
-        const result = player.inventory.useItem(num - 1, player);
+        const result = await player.inventory.useItem(num - 1, player);
 
         if (result !== null) {
             displayManager.addMessage(result);
