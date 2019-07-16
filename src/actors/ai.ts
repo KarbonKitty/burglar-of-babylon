@@ -1,6 +1,7 @@
 import { GameMap } from "../map";
 import { GamePosition } from "../position";
 import { Actor } from "./actor";
+import { Path } from "rot-js";
 
 export interface AI {
     act: (actor: Actor, map: GameMap) => Promise<void>;
@@ -27,6 +28,41 @@ export class Wanderer implements AI {
         if (map.isPositionAvailable(newPosition)) {
             actor.position = newPosition;
             map.recalculateEnemyFov();
+        }
+
+        return Promise.resolve();
+    }
+}
+
+export class Patrol implements AI {
+    private pointA: GamePosition;
+    private pointB: GamePosition;
+    private target: "a" | "b";
+
+    constructor(pointA: GamePosition, pointB: GamePosition) {
+        this.pointA = pointA;
+        this.pointB = pointB;
+        this.target = "b";
+    }
+
+    act(actor: Actor, map: GameMap) {
+        const goal = this.target === "a" ? this.pointA : this.pointB;
+        const pathfinder = new Path.AStar(goal.x, goal.y, (x, y) => map.tileInPosition(new GamePosition(x, y)).passable);
+        const steps: GamePosition[] = [];
+        pathfinder.compute(actor.position.x, actor.position.y, (x, y) => steps.push(new GamePosition(x, y)));
+
+        const firstStep = steps[1];
+
+        if (map.isPositionAvailable(firstStep)) {
+            actor.position = firstStep;
+        }
+
+        if (actor.position.x === this.pointA.x && actor.position.y === this.pointA.y) {
+            this.target = "b";
+        }
+
+        if (actor.position.x === this.pointB.x && actor.position.y === this.pointB.y) {
+            this.target = "a";
         }
 
         return Promise.resolve();

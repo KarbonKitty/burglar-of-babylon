@@ -17,6 +17,6 @@ export class NPC implements Actor {
         this.tile = tile;
         this.sightRadius = sightRadius;
         this.ai = ai;
-        this.act = ai.act;
+        this.act = ai.act.bind(ai);
     }
 }
