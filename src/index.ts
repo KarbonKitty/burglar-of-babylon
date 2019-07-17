@@ -7,7 +7,7 @@ import { GameManager } from './gameManager';
 import { items } from './data/items';
 import { GamePosition } from './position';
 import { Item } from './items/item';
-import { Wanderer, Patrol } from './actors/ai';
+import { Patrol } from './actors/ai';
 
 const displayManager = new DisplayManager();
 const office = new GameMap(officeMap);
@@ -18,10 +18,11 @@ const gameManager = new GameManager(player, office, displayManager);
 const guardTile = { glyph: "G", color: "#f00" };
 
 const guards = [
-    new NPC(guardTile, 56, 56, 1, new Patrol(new GamePosition(57, 57), new GamePosition(50, 30))),
-    new NPC(guardTile, 18, 50, 5, new Wanderer()),
-    new NPC(guardTile, 6, 24, 5, new Wanderer()),
-    new NPC(guardTile, 50, 30, 5, new Wanderer())];
+    new NPC(guardTile, 5, 23, 4, new Patrol(new GamePosition(5, 23), new GamePosition(5, 38))),
+    new NPC(guardTile, 1, 42, 4, new Patrol(new GamePosition(1, 42), new GamePosition(19, 58))),
+    new NPC(guardTile, 31, 50, 4, new Patrol(new GamePosition(31, 50), new GamePosition(51, 30))),
+    new NPC(guardTile, 22, 10, 4, new Patrol(new GamePosition(22, 10), new GamePosition(51, 30))),
+];
 
 office.itemsList.set(office.positionToIndex(new GamePosition(40, 40)), new Item(items.signalJammer));
 office.itemsList.set(office.positionToIndex(new GamePosition(57, 19)), new Item(items.signalJammer));
