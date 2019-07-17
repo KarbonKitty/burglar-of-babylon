@@ -47,7 +47,7 @@ export class Patrol implements AI {
 
     act(actor: Actor, map: GameMap) {
         const goal = this.target === "a" ? this.pointA : this.pointB;
-        const pathfinder = new Path.AStar(goal.x, goal.y, (x, y) => map.isTilePathable(x, y, actor));
+        const pathfinder = new Path.AStar(goal.x, goal.y, (x, y) => map.isTilePathable(x, y, actor), { topology: 4 });
         const steps: GamePosition[] = [];
         pathfinder.compute(actor.position.x, actor.position.y, (x, y) => steps.push(new GamePosition(x, y)));
 
@@ -60,6 +60,7 @@ export class Patrol implements AI {
 
         if (map.isPositionAvailable(firstStep)) {
             actor.position = firstStep;
+            map.recalculateEnemyFov();
         } else {
             map.interactAt(firstStep, actor);
         }
