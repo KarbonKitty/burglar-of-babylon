@@ -1,5 +1,6 @@
 import { Item, ItemInfo } from "./item";
 import { Actor } from "../actors/actor";
+import { GameMap } from "../map";
 
 export class Inventory {
     private items: Item[];
@@ -33,10 +34,10 @@ export class Inventory {
         }
     }
 
-    async useItem(index: number, actor: Actor): Promise<string | null> {
+    async useItem(index: number, actor: Actor, map: GameMap): Promise<string | null> {
         const thing = this.items[index];
         if (typeof thing !== 'undefined') {
-            const msg = thing.use(actor);
+            const msg = thing.use(actor, map);
             if (typeof thing.usesLeft !== 'undefined') {
                 thing.usesLeft--;
                 if (thing.usesLeft === 0) {

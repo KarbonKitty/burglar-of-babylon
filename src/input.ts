@@ -24,6 +24,12 @@ class InputManager {
             return;
         }
 
+        if (player.conditions.find(c => c.type === 'stunned')) {
+            displayManager.addMessage(`You are helpless!`);
+            player.stopAct();
+            return;
+        }
+
         switch (this._state) {
             case "general":
                 this.handleGeneralKeys(e, player, map, displayManager);
@@ -32,7 +38,7 @@ class InputManager {
                 this.useInDirection(e, player, map, displayManager);
                 return;
             case "use-from-inventory":
-                this.useFromInventory(e, player, displayManager);
+                this.useFromInventory(e, player, map, displayManager);
                 return;
             case "get-direction":
                 const dir = this.keyToDirection(player.position, e.keyCode);
@@ -118,7 +124,7 @@ class InputManager {
         }
     }
 
-    private async useFromInventory(e: KeyboardEvent, player: Player, displayManager: DisplayManager) {
+    private async useFromInventory(e: KeyboardEvent, player: Player, map: GameMap, displayManager: DisplayManager) {
         const num = this.numberFromKey(e.keyCode);
 
         if (num === -1) {
@@ -127,7 +133,7 @@ class InputManager {
             return;
         }
 
-        const result = await player.inventory.useItem(num - 1, player);
+        const result = await player.inventory.useItem(num - 1, player, map);
 
         if (result !== null) {
             displayManager.addMessage(result);

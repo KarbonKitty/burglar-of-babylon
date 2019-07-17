@@ -153,6 +153,10 @@ export class GameMap {
         return { success: true, msg: command.msg };
     }
 
+    actorAt(position: GamePosition): Actor | undefined {
+        return this.actorList.find(a => a.position.x === position.x && a.position.y === position.y);
+    }
+
     private xyToIndex(x: number, y: number) {
         return this.width * y + x;
     }

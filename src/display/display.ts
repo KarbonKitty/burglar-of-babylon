@@ -106,18 +106,29 @@ export class DisplayManager {
     }
 
     drawInterface(player: Player) {
+        let currentLine = 2;
+
         this.clearPartial(new GamePosition(0, 0), new GamePosition(this.textAreaWidth, this.interfaceAreaHeight));
 
         // player name
-        this.messageDisplay.drawText(1, 2, player.name, this.lineLength);
+        this.messageDisplay.drawText(1, currentLine++, player.name, this.lineLength);
+        currentLine++;
 
         // alert level
         const alertColor = Color.toHex(Color.interpolate([200, 200, 200], [255, 0, 0], player.alertLevel / 5));
         const alertMsg = `%c{ ${alertColor} }Current alert level: ${player.alertLevel} / 5`;
-        this.messageDisplay.drawText(1, 4, alertMsg, this.lineLength);
+        this.messageDisplay.drawText(1, currentLine++, alertMsg, this.lineLength);
+        currentLine++;
 
+        // conditions
+        player.conditions.forEach(c => this.messageDisplay.drawText(1, currentLine++, `You are ${c.type}! ${c.duration} seconds left.`));
+        if (player.conditions.length > 0) {
+            currentLine++;
+        }
+
+        // inventory
         player.inventory.getAllItemsInfo().forEach((item, index) => {
-            this.messageDisplay.drawText(1, 6 + index, `${index + 1}. ${item.name}`);
+            this.messageDisplay.drawText(1, currentLine++, `${index + 1}. ${item.name}`);
         });
     }
 

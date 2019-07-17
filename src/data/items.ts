@@ -15,5 +15,17 @@ export const items = {
     }, 1),
     watch: new ItemTemplate("watch", { glyph: "@", color: "#666" }, user => {
         return Promise.resolve(new Date(time.time).toISOString().split('.')[0].split('T').join(' '));
+    }),
+    stunGun: new ItemTemplate("stun gun", { glyph: "Γ", color: "#0cc" }, async (user, map) => {
+        const target = await inputManager.getDirection();
+
+        const targetedActor = map.actorAt(target);
+
+        if (typeof targetedActor !== 'undefined') {
+            targetedActor.conditions.push({ type: 'stunned', duration: 3 });
+            return Promise.resolve(`${targetedActor.name} was stunned!`);
+        } else {
+            return Promise.resolve(`There is nobody there!`);
+        }
     })
 };

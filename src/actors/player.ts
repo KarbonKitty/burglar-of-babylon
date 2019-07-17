@@ -6,6 +6,7 @@ import { Inventory } from "../items/inventory";
 import { items } from "../data/items";
 import { time } from "../time";
 import { Item } from "../items/item";
+import { Condition } from "./condition";
 
 export class Player implements Actor {
     name: string;
@@ -15,6 +16,7 @@ export class Player implements Actor {
     isPlayerTurn: boolean = false;
     alertLevel: number = 0;
     inventory = new Inventory();
+    conditions: Condition[] = [];
 
     private _resolve: ((value?: void | PromiseLike<void> | undefined) => void) | null = null;
     private _map: GameMap | null = null;
@@ -31,11 +33,21 @@ export class Player implements Actor {
     act(actor: Actor, map: GameMap): Promise<void> {
         this.isPlayerTurn = true;
         this._map = map;
-        return new Promise((resolve) => this._resolve = resolve);
-    }
 
+        let p = new Promise<void>((resolve) => this._resolve = resolve);
+
+        return p;
+    }
+    
     stopAct() {
         this.isPlayerTurn = false;
+
+        this.conditions = this.conditions.map(c => {
+            c.duration -= 1;
+            return c;
+        });
+        this.conditions = this.conditions.filter(c => c.duration > 0);
+
         this.checkAlertLevel();
         time.tick(1000);
         this._resolve!();

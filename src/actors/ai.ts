@@ -46,6 +46,10 @@ export class Patrol implements AI {
     }
 
     act(actor: Actor, map: GameMap) {
+        if (!this.checkConditions(actor)) {
+            return Promise.resolve();
+        }
+
         const goal = this.target === "a" ? this.pointA : this.pointB;
         const pathfinder = new Path.AStar(goal.x, goal.y, (x, y) => map.isTilePathable(x, y, actor), { topology: 4 });
         const steps: GamePosition[] = [];
@@ -74,5 +78,20 @@ export class Patrol implements AI {
         }
 
         return Promise.resolve();
+    }
+
+    private checkConditions(actor: Actor): boolean {
+        let retVal = true;
+
+        if (actor.conditions.find(c => c.type === 'stunned')) {
+            retVal = false;
+        }
+
+        actor.conditions = actor.conditions.map(c => {
+            c.duration -= 1;
+            return c;
+        }).filter(c => c.duration > 0);
+
+        return retVal;
     }
 }
