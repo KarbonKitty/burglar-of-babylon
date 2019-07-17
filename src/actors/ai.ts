@@ -47,14 +47,21 @@ export class Patrol implements AI {
 
     act(actor: Actor, map: GameMap) {
         const goal = this.target === "a" ? this.pointA : this.pointB;
-        const pathfinder = new Path.AStar(goal.x, goal.y, (x, y) => map.tileInPosition(new GamePosition(x, y)).passable);
+        const pathfinder = new Path.AStar(goal.x, goal.y, (x, y) => map.isTilePathable(x, y, actor));
         const steps: GamePosition[] = [];
         pathfinder.compute(actor.position.x, actor.position.y, (x, y) => steps.push(new GamePosition(x, y)));
+
+        // This will freeze actor in place, but at least it won't crash
+        if (steps.length < 2) {
+            return Promise.resolve();
+        }
 
         const firstStep = steps[1];
 
         if (map.isPositionAvailable(firstStep)) {
             actor.position = firstStep;
+        } else {
+            map.interactAt(firstStep, actor);
         }
 
         if (actor.position.x === this.pointA.x && actor.position.y === this.pointA.y) {

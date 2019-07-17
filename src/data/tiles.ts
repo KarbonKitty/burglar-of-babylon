@@ -9,7 +9,7 @@ const tiles = {
     floor: { name: "floor", description: "floor description", tile: { glyph: "⋅", color: "#ccf" }, passable: true, transparent: true },
     wall: { name: "wall", description: "wall description", tile: { glyph: '#', color: '#ccc' }, passable: false, transparent: false },
     bed: { name: "bed", description: "just a bed", tile: { glyph: "=", color: "#ccf" }, passable: true, transparent: true },
-    door: { name: "door", description: "door desc", tile: { glyph: "+", color: "#ccf" }, passable: false, transparent: false, interact: openDoor },
+    door: { name: "door", description: "door desc", tile: { glyph: "+", color: "#ccf" }, passable: false, transparent: false, interact: openDoor, pathable: () => true },
     openDoor: { name: "open door", description: "open door", tile: { glyph: "/", color: "#ccf" }, passable: true, transparent: true, interact: closeDoor },
     secureDoor: { name: "secure door", description: "secure door", tile: { glyph: "±", color: "#ccf" }, passable: false, transparent: false },
     openSecureDoor: { name: "open secure door", description: "open secure door", tile: { glyph: "/", color: "#ccf" }, passable: true, transparent: true },

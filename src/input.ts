@@ -60,7 +60,7 @@ class InputManager {
     private tryMoveTo(player: Player, map: GameMap, newPosition: GamePosition, displayManager: DisplayManager) {
         if (map.isPositionAvailable(newPosition)) {
             player.position = newPosition;
-            map.recalculateFov(newPosition, player.sightRadius);
+            map.recalculatePlayerFov();
             return true;
         } else {
             return this.interactInPosition(player, map, newPosition, displayManager);
@@ -68,22 +68,13 @@ class InputManager {
     }
 
     private interactInPosition(player: Player, map: GameMap, position: GamePosition, displayManager: DisplayManager) {
-        const mapIndex = map.positionToIndex(position);
+        const result = map.interactAt(position, player);
 
-        const interactFunc = map.tileArray[mapIndex].interact;
-        if (typeof interactFunc === 'function') {
-            const command = interactFunc(player, map);
-            if (command.type === 'tile-transformation' && command.payload) {
-                map.tileArray[mapIndex] = command.payload;
-                map.recalculateFov(player.position, player.sightRadius);
-                if (command.msg) {
-                    displayManager.addMessage(command.msg);
-                }
-                return true;
-            }
+        if (result.msg) {
+            displayManager.addMessage(result.msg);
         }
 
-        return false;
+        return result.success;
     }
 
     private handleGeneralKeys(e: KeyboardEvent, player: Player, map: GameMap, displayManager: DisplayManager) {

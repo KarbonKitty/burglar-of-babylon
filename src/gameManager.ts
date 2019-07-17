@@ -42,7 +42,7 @@ export class GameManager {
 
     runMap() {
         // TODO: variable draw radius
-        this.map.recalculateFov(this.player.position, this.player.sightRadius);
+        this.map.recalculatePlayerFov();
         this.map.recalculateEnemyFov();
 
         this.displayManager.drawInterface(this.player);
