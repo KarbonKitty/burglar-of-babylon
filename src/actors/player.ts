@@ -38,7 +38,7 @@ export class Player implements Actor {
 
         return p;
     }
-    
+
     stopAct() {
         this.isPlayerTurn = false;
 

@@ -17,6 +17,22 @@ export class GamePosition {
         return new GamePosition(this.x + 1, this.y);
     }
 
+    get northeast(): GamePosition {
+        return new GamePosition(this.x + 1, this.y - 1);
+    }
+
+    get northwest(): GamePosition {
+        return new GamePosition(this.x - 1, this.y - 1);
+    }
+
+    get southeast(): GamePosition {
+        return new GamePosition(this.x + 1, this.y + 1);
+    }
+
+    get southwest(): GamePosition {
+        return new GamePosition(this.x - 1, this.y + 1);
+    }
+
     get cardinalNeighborhood(): GamePosition[] {
         return [this.north, this.east, this.south, this.west];
     }

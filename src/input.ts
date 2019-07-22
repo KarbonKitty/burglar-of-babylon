@@ -156,19 +156,35 @@ class InputManager {
             case KEYS.VK_UP:
             case KEYS.VK_W:
             case KEYS.VK_K:
+            case KEYS.VK_NUMPAD8:
                 return oldPosition.north;
             case KEYS.VK_DOWN:
             case KEYS.VK_S:
             case KEYS.VK_J:
+            case KEYS.VK_NUMPAD2:
                 return oldPosition.south;
             case KEYS.VK_LEFT:
             case KEYS.VK_A:
             case KEYS.VK_H:
+            case KEYS.VK_NUMPAD4:
                 return oldPosition.west;
             case KEYS.VK_RIGHT:
             case KEYS.VK_D:
             case KEYS.VK_L:
+            case KEYS.VK_NUMPAD6:
                 return oldPosition.east;
+            case KEYS.VK_NUMPAD7:
+            case KEYS.VK_Y:
+                return oldPosition.northwest;
+            case KEYS.VK_NUMPAD9:
+            case KEYS.VK_U:
+                return oldPosition.northeast;
+            case KEYS.VK_NUMPAD3:
+            case KEYS.VK_N:
+                return oldPosition.southeast;
+            case KEYS.VK_NUMPAD1:
+            case KEYS.VK_B:
+                return oldPosition.southwest;
             default:
                 return null;
         }
