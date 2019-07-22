@@ -1,6 +1,6 @@
 import { Actor } from "./actor";
 import { GameMap } from "../map";
-import { GamePosition } from "../position";
+import { GamePosition, Directions } from "../position";
 import { Tile } from "../display";
 import { Inventory } from "../items/inventory";
 import { items } from "../data/items";
@@ -12,6 +12,7 @@ export class Player implements Actor {
     name: string;
     tile: Tile;
     position: GamePosition;
+    direction: Directions;
     sightRadius = 10;
     isPlayerTurn: boolean = false;
     alertLevel: number = 0;
@@ -23,6 +24,7 @@ export class Player implements Actor {
 
     constructor(name: string, x: number, y: number) {
         this.position = new GamePosition(x, y);
+        this.direction = Directions.north;
         this.name = name;
         this.tile = { glyph: '@', color: '#ffffff' };
 
@@ -34,7 +36,7 @@ export class Player implements Actor {
         this.isPlayerTurn = true;
         this._map = map;
 
-        let p = new Promise<void>((resolve) => this._resolve = resolve);
+        const p = new Promise<void>((resolve) => this._resolve = resolve);
 
         return p;
     }

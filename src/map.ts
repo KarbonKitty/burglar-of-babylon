@@ -90,7 +90,7 @@ export class GameMap {
         this.enemyVision = [];
 
         this.actorList.filter(a => !(a instanceof Player)).forEach(
-            a => this.fov.compute(a.position.x, a.position.y, a.sightRadius, (x, y) => {
+            a => this.fov.compute180(a.position.x, a.position.y, a.sightRadius, a.direction, (x, y) => {
                 const index = this.xyToIndex(x, y);
                 // this way the walls aren't colored and player doesn't know
                 // that there is enemy on the other side

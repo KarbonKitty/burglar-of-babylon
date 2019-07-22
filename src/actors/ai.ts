@@ -1,5 +1,5 @@
 import { GameMap } from "../map";
-import { GamePosition } from "../position";
+import { GamePosition, Directions } from "../position";
 import { Actor } from "./actor";
 import { Path } from "rot-js";
 
@@ -8,25 +8,29 @@ export interface AI {
 }
 
 export class Wanderer implements AI {
-    constructor() { }
-
     act(actor: Actor, map: GameMap) {
         const choice = Math.random();
         let newPosition: GamePosition;
+        let newDirection: Directions;
         if (choice <= 0.2) {
             return Promise.resolve();
         } else if (choice <= 0.4) {
             newPosition = actor.position.east;
+            newDirection = Directions.east;
         } else if (choice <= 0.6) {
             newPosition = actor.position.west;
+            newDirection = Directions.west;
         } else if (choice <= 0.8) {
             newPosition = actor.position.south;
+            newDirection = Directions.south;
         } else {
             newPosition = actor.position.north;
+            newDirection = Directions.north;
         }
 
         if (map.isPositionAvailable(newPosition)) {
             actor.position = newPosition;
+            actor.direction = newDirection;
             map.recalculateEnemyFov();
         }
 
@@ -63,7 +67,9 @@ export class Patrol implements AI {
         const firstStep = steps[1];
 
         if (map.isPositionAvailable(firstStep)) {
+            const newDirection = firstStep.directionFrom(actor.position).toEnum() || actor.direction;
             actor.position = firstStep;
+            actor.direction = newDirection;
             map.recalculateEnemyFov();
         } else {
             map.interactAt(firstStep, actor);
