@@ -4,6 +4,7 @@ import { Tile } from '../display';
 import { GamePosition, Directions } from "../position";
 import { AI } from "./ai";
 import { Condition } from "./condition";
+import { Inventory } from "../items/inventory";
 
 export class NPC implements Actor {
     name: string;
@@ -11,6 +12,7 @@ export class NPC implements Actor {
     position: GamePosition;
     direction: Directions;
     sightRadius: number;
+    inventory: Inventory;
     conditions: Condition[];
     act: (actor: Actor, map: GameMap) => Promise<void>;
 
@@ -22,6 +24,7 @@ export class NPC implements Actor {
         this.direction = Directions.north;
         this.tile = tile;
         this.sightRadius = sightRadius;
+        this.inventory = new Inventory();
         this.ai = ai;
         this.act = ai.act.bind(ai);
 
