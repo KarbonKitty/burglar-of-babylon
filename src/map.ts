@@ -5,7 +5,7 @@ import { mapTiles } from "./data/tiles";
 import { FOV } from "rot-js";
 import RecursiveShadowcasting from "rot-js/lib/fov/recursive-shadowcasting";
 import { Player } from "./actors/player";
-import { Item } from "./items/item";
+import { Item, ItemTemplate } from "./items/item";
 import { map } from "./data/floor38";
 
 export class GameMap {
@@ -141,16 +141,18 @@ export class GameMap {
 
         const command = interactFunc(actor, this);
 
-        if (command.type !== 'tile-transformation' || !command.payload) {
-            return { success: false };
+        switch (command.type) {
+            case 'null':
+                return { success: false, msg: command.msg };
+            case 'tile-transformation':
+                this.tileArray[index] = command.payload;
+                this.recalculatePlayerFov();
+                this.recalculateEnemyFov();
+                return { success: true, msg: command.msg };
+            case 'item-creation':
+                const success = actor.inventory.addItem(new Item(command.payload));
+                return { success, msg: command.msg };
         }
-
-        this.tileArray[index] = command.payload;
-
-        this.recalculatePlayerFov();
-        this.recalculateEnemyFov();
-
-        return { success: true, msg: command.msg };
     }
 
     actorAt(position: GamePosition): Actor | undefined {
@@ -162,11 +164,10 @@ export class GameMap {
     }
 }
 
-export interface IInteractionCommand {
-    type: "tile-transformation" | "null";
-    payload: IMapTile | null;
-    msg?: string;
-}
+export type IInteractionCommand =
+    { type: "tile-transformation", payload: IMapTile, msg?: string } |
+    { type: "item-creation", payload: ItemTemplate, msg?: string } |
+    { type: "null", msg?: string };
 
 export interface IMapTile {
     name: string;

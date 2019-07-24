@@ -1,5 +1,6 @@
 import { IMapTile, IInteractionCommand } from "../map";
 import { Actor } from "../actors/actor";
+import { items } from "./items";
 
 /* tslint:disable:max-line-length */
 
@@ -9,10 +10,18 @@ const openSecureDoor = (actor: Actor): IInteractionCommand => {
     if (actor.inventory.checkForItem("keycard")) {
         return { type: 'tile-transformation', payload: tiles.openSecureDoor, msg: "The security door has been opened with a keycard" };
     } else {
-        return { type: 'null', payload: null, msg: "Security door can only be open with keycard!" };
+        return { type: 'null', msg: "Security door can only be opened with keycard!" };
     }
 };
 const closeSecureDoor = () => ({ type: 'tile-transformation', payload: tiles.secureDoor, msg: "The security door has been closed and locked" }) as IInteractionCommand;
+const hackMainframe = () => ({ type: 'item-creation', payload: items.data, msg: "You have retrieved data from the mainframe!" }) as IInteractionCommand;
+const escape = (actor: Actor): IInteractionCommand => {
+    if (actor.inventory.checkForItem("data")) {
+        return { type: 'null', msg: "You have succesfully escaped with the data! The winner is you!" };
+    } else {
+        return { type: 'null', msg: "You better get the data first!" };
+    }
+}
 
 const tiles: { [index: string]: IMapTile } = {
     floor: { name: "floor", description: "floor description", tile: { glyph: "⋅", color: "#ccf" }, passable: true, transparent: true },
@@ -33,11 +42,11 @@ const tiles: { [index: string]: IMapTile } = {
     openAir: { name: "open air", description: "open air", tile: { glyph: " ", color: "#aaa" }, passable: false, transparent: true },
     stairsDown: { name: "stairs down", description: "stairs down", tile: { glyph: ">", color: "#fff" }, passable: true, transparent: true },
     stairsUp: { name: "stairs up", description: "stairs up", tile: { glyph: "<", color: "#ccf" }, passable: true, transparent: true },
-    elevatorFloor: { name: "elevator floor", description: "elevator floor", tile: { glyph: "_", color: "#ddd" }, passable: true, transparent: true },
+    elevatorFloor: { name: "elevator floor", description: "elevator floor", tile: { glyph: "_", color: "#ddd" }, passable: true, transparent: true, interact: escape },
     officeChair: { name: "office chair", description: "office chair", tile: { glyph: "ከ", color: "#fff" }, passable: true, transparent: true },
     officeDesk: { name: "office desk", description: "office desk", tile: { glyph: "Π", color: "#fff" }, passable: false, transparent: true },
     officeCabinet: { name: "office storage cabinet", description: "office storage cabinet", tile: { glyph: "≠", color: "#fff" }, passable: false, transparent: false },
-    mainframe: { name: "mainframe", description: "mission target", tile: { glyph: "Ѫ", color: "#fff" }, passable: false, transparent: false },
+    mainframe: { name: "mainframe", description: "mission target", tile: { glyph: "Ѫ", color: "#fff" }, passable: false, transparent: false, interact: hackMainframe },
     lowDoor: { name: "low door", description: "low door", tile: { glyph: "₊", color: "#ccf" }, passable: false, transparent: true },
     bookcase: { name: "bookcase", description: "bookcase", tile: { glyph: "Ξ", color: "#cff" }, passable: false, transparent: false },
     pottedPlant: { name: "office plant", description: "office plant", tile: { glyph: "♠", color: "#0f0" }, passable: false, transparent: true },

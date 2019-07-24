@@ -30,5 +30,8 @@ export const items = {
     }),
     keycard: new ItemTemplate("keycard", { glyph: "💳", color: "#0ff" }, user =>
         Promise.resolve("This keycard opens server room.")
+    ),
+    data: new ItemTemplate("data", { glyph: "␀", color: "#fff" }, user =>
+        Promise.resolve("It's heavily encrypted, so you won't be able to read it. Better to head to the lifts now.")
     )
 };
