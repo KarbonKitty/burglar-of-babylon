@@ -135,8 +135,8 @@ export class DisplayManager {
     showHelp() {
         const helpData = ["Welcome to Burglar of Vratislavia!",
             "",
-            "Move around with arrow keys, WASD or HJKL",
-            "Press 'u' to use open doors open or close them",
+            "Move around with arrow keys, QWEADZXC, vi-keys (hjklyubn) or numpad; space and numpad 5 wait a turn.",
+            "Press 'f' to interact with environment (e.g. open and close doors)",
             "    (you can just bump into closed doors to open them, too)",
             "Press 'i' followed by a number to use item from your inventory",
             "Press 'g' to pick up item from the ground",
@@ -144,7 +144,7 @@ export class DisplayManager {
             "Alert level raises whenever you end turn on the red square, which marks guards' field of view.",
             "Use signal jammers to reduce it!"].reverse();
 
-        let oldBuffer = this.messageBuffer;
+        const oldBuffer = this.messageBuffer;
         this.messageBuffer = helpData;
         this.drawMessages();
         this.messageBuffer = oldBuffer;

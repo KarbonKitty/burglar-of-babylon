@@ -90,9 +90,10 @@ class InputManager {
         } else {
             switch (e.keyCode) {
                 case KEYS.VK_SPACE:
+                case KEYS.VK_NUMPAD5:
                     player.stopAct();
                     break;
-                case KEYS.VK_U:
+                case KEYS.VK_F:
                     displayManager.addTemporaryMessage("Please select direction");
                     this._state = "use-in-direction";
                     this.actionSlot = this.useInPosition;
@@ -159,7 +160,7 @@ class InputManager {
             case KEYS.VK_NUMPAD8:
                 return oldPosition.north;
             case KEYS.VK_DOWN:
-            case KEYS.VK_S:
+            case KEYS.VK_X:
             case KEYS.VK_J:
             case KEYS.VK_NUMPAD2:
                 return oldPosition.south;
@@ -174,12 +175,20 @@ class InputManager {
             case KEYS.VK_NUMPAD6:
                 return oldPosition.east;
             case KEYS.VK_NUMPAD7:
+            case KEYS.VK_Q:
+            case KEYS.VK_Y:
                 return oldPosition.northwest;
             case KEYS.VK_NUMPAD9:
+            case KEYS.VK_E:
+            case KEYS.VK_U:
                 return oldPosition.northeast;
             case KEYS.VK_NUMPAD3:
+            case KEYS.VK_Z:
+            case KEYS.VK_N:
                 return oldPosition.southeast;
             case KEYS.VK_NUMPAD1:
+            case KEYS.VK_C:
+            case KEYS.VK_B:
                 return oldPosition.southwest;
             default:
                 return null;
