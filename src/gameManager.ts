@@ -55,9 +55,9 @@ export class GameManager {
 
         addEventListener("mousedown", e => {
             const p = this.displayManager.gameDisplay.eventToPosition(e);
-            const name = this.map.tryLookAt(p[0], p[1]);
-            if (typeof name !== 'undefined') {
-                this.displayManager.addMessage(`You see a ${name}.`);
+            const data = this.map.tryLookAt(p[0], p[1]);
+            if (typeof data !== 'undefined') {
+                this.displayManager.addMessage(`You seed a ${data.name}. ${data.desc}`);
             }
         });
 

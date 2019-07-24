@@ -7,6 +7,7 @@ import RecursiveShadowcasting from "rot-js/lib/fov/recursive-shadowcasting";
 import { Player } from "./actors/player";
 import { Item, ItemTemplate } from "./items/item";
 import { map } from "./data/floor38";
+import { Theme } from "./data/themes";
 
 export class GameMap {
     tileArray: IMapTile[] = [];
@@ -17,12 +18,15 @@ export class GameMap {
     visibilityMask: boolean[] = [];
     enemyVision: boolean[] = [];
 
-    width: number;
-    height: number;
+    private width: number;
+    private height: number;
+    private theme: Theme;
 
     private fov: RecursiveShadowcasting;
 
-    constructor(textMap: string[]) {
+    constructor(theme: Theme, textMap: string[]) {
+        this.theme = theme;
+
         this.height = textMap.length;
         const chars = textMap.map(s => s.split(''));
         this.width = chars[0].length;
@@ -99,10 +103,11 @@ export class GameMap {
         );
     }
 
-    tryLookAt(x: number, y: number) {
+    tryLookAt(x: number, y: number): { name: string, desc: string } | undefined {
         const index = this.xyToIndex(x, y);
         if (this.visibilityMask[index]) {
-            return this.tileArray[index].name;
+            const tile = this.tileArray[index];
+            return { name: tile.name, desc: tile.descriptions[this.theme] || tile.descriptions.default };
         }
     }
 
@@ -171,7 +176,7 @@ export type IInteractionCommand =
 
 export interface IMapTile {
     name: string;
-    description: string;
+    descriptions: { default: string, [index: string]: string };
     tile: Tile;
     passable: boolean;
     transparent: boolean;

@@ -10,7 +10,7 @@ import { Item } from './items/item';
 import { Patrol } from './actors/ai';
 
 const displayManager = new DisplayManager();
-const office = new GameMap(officeMap);
+const office = new GameMap('office', officeMap);
 const player = new Player("Johnny", 58, 58);
 
 const gameManager = new GameManager(player, office, displayManager);
