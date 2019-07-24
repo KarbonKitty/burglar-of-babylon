@@ -27,5 +27,8 @@ export const items = {
         } else {
             return Promise.resolve(`There is nobody there!`);
         }
-    })
+    }),
+    keycard: new ItemTemplate("keycard", { glyph: "💳", color: "#0ff" }, user =>
+        Promise.resolve("This keycard opens server room.")
+    )
 };

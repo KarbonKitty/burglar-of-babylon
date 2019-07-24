@@ -34,6 +34,10 @@ export class Inventory {
         }
     }
 
+    checkForItem(itemName: string) {
+        return this.items.filter(i => itemName === i.name).length > 0;
+    }
+
     async useItem(index: number, actor: Actor, map: GameMap): Promise<string | null> {
         const thing = this.items[index];
         if (typeof thing !== 'undefined') {

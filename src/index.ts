@@ -31,6 +31,8 @@ office.itemsList.set(office.positionToIndex(new GamePosition(57, 19)), new Item(
 office.itemsList.set(office.positionToIndex(new GamePosition(58, 2)), new Item(items.signalJammer));
 office.itemsList.set(office.positionToIndex(new GamePosition(19, 58)), new Item(items.signalJammer));
 
+office.itemsList.set(office.positionToIndex(new GamePosition(25, 5)), new Item(items.keycard));
+
 gameManager.registerActor(guards[0]);
 gameManager.registerActor(guards[1]);
 gameManager.registerActor(guards[2]);
