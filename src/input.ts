@@ -111,6 +111,9 @@ class InputManager {
                 case KEYS.VK_P:
                     displayManager.showHelp();
                     break;
+                case KEYS.VK_0:
+                    displayManager.displayDebugInfo();
+                    break;
             }
         }
     }

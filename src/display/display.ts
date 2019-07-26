@@ -150,6 +150,20 @@ export class DisplayManager {
         this.messageBuffer = oldBuffer;
     }
 
+    displayDebugInfo() {
+        const debugData = [
+            `Current font size: ${this.fontSize}`,
+            "",
+            `Reported screen width: ${screen.width}`,
+            `Reported screen heigth: ${screen.height}`
+        ];
+
+        const oldBuffer = this.messageBuffer;
+        this.messageBuffer = debugData;
+        this.drawMessages();
+        this.messageBuffer = oldBuffer;
+    }
+
     private clearPartial(leftUp: GamePosition, rightDown: GamePosition) {
         for (let i = leftUp.x; i <= rightDown.x; i++) {
             for (let j = leftUp.y; j <= rightDown.y; j++) {
@@ -160,9 +174,9 @@ export class DisplayManager {
 
     private getFontSize() {
         if (screen.width <= 1280 || screen.height <= 720) {
-            return 10;
+            return 9;
         } else if (screen.width <= 1600 || screen.height <= 900) {
-            return 12;
+            return 11;
         } else {
             return 15;
         }
