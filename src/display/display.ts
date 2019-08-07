@@ -133,7 +133,7 @@ export class DisplayManager {
     }
 
     showHelp() {
-        const helpData = ["Welcome to Burglar of Vratislavia!",
+        const helpData = ["Welcome to Burglar of Babylon!",
             "",
             "Move around with arrow keys, QWEADZXC, vi-keys (hjklyubn) or numpad; space and numpad 5 wait a turn.",
             "Press 'f' to interact with environment (e.g. open and close doors)",
