@@ -57,7 +57,7 @@ export class GameManager {
             const p = this.displayManager.gameDisplay.eventToPosition(e);
             const data = this.map.tryLookAt(p[0], p[1]);
             if (typeof data !== 'undefined') {
-                this.displayManager.addMessage(`You seed a ${data.name}. ${data.desc}`);
+                this.displayManager.addMessage(`You see a ${data.name}. ${data.desc}`);
             }
         });
 
