@@ -186,11 +186,11 @@ class InputManager {
             case KEYS.VK_U:
                 return oldPosition.northeast;
             case KEYS.VK_NUMPAD3:
-            case KEYS.VK_Z:
+            case KEYS.VK_C:
             case KEYS.VK_N:
                 return oldPosition.southeast;
             case KEYS.VK_NUMPAD1:
-            case KEYS.VK_C:
+            case KEYS.VK_Z:
             case KEYS.VK_B:
                 return oldPosition.southwest;
             default:
