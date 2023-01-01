@@ -16,10 +16,10 @@
     "rot-js": "^2.1.0"
   },
   "devDependencies": {
-    "ts-loader": "^6.0.2",
+    "ts-loader": "^9.4.2",
     "tslint": "^5.18.0",
     "typescript": "^3.5.1",
-    "webpack": "^4.33.0",
-    "webpack-cli": "^3.3.2"
+    "webpack": "^5.75.0",
+    "webpack-cli": "^5.0.1"
   }
 }
